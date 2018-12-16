@@ -12,39 +12,130 @@
 		android:layout_height="match_parent"
 		android:stretchColumns="*">
 		<TableRow>
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
 		</TableRow>
 		<TableRow>
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-		</TableRow>
-		<TableRow>
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-		</TableRow>
-		<TableRow>
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-		</TableRow>
-		<TableRow>
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
-			<ImageButton android:src="@mipmap/ic_launcher" android:layout_width="70dp" android:adjustViewBounds="true" android:scaleType="fitCenter" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+		</TableRow><TableRow>
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+		</TableRow><TableRow>
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
 		</TableRow>
 </TableLayout>
 </RelativeLayout>

@@ -8,6 +8,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using Java.Interop;
 using TicTacToeXamarin.Game;
 
 namespace TicTacToeXamarin
@@ -29,7 +30,6 @@ namespace TicTacToeXamarin
 
         private void InitBoard()
         {
-            TableRow gameTableRow = null;
             Context context = Android.App.Application.Context;
             _gameBoardtableLayout = FindViewById<TableLayout>( Resource.Id.boardTableLayout );
             _gameBoard = new Dictionary<int, GameButtonStates>();
@@ -48,7 +48,7 @@ namespace TicTacToeXamarin
                     {
                         ImageButton imageButton = (ImageButton)viewRow.GetChildAt(j);
                         imageButton.Id = id;
-                        _gameBoard.Add(id, GameButtonStates.Standard);
+                        _gameBoard.Add(id, GameButtonStates.Circle);
                         id++;
                     }
                 }
@@ -82,6 +82,41 @@ namespace TicTacToeXamarin
         {
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);
             return true;
+        }
+
+        [Export("OnButtonClick")]
+        public void OnButtonClick( View view )
+        {
+            GameButtonStates gameButtonState = GameButtonStates.Standard;
+            ImageButton imageButton = null;
+            if(view != null && ( view is ImageButton))
+            {
+                if( _gameBoard.ContainsKey(view.Id))
+                {
+                    gameButtonState = _gameBoard[view.Id];
+
+                    imageButton = FindViewById<ImageButton>( view.Id );
+
+                    if(imageButton != null)
+                    {
+                        switch (gameButtonState)
+                        {
+                            case GameButtonStates.Circle:
+                                imageButton.SetImageResource(Resource.Mipmap.cross);
+                                _gameBoard[view.Id] = GameButtonStates.Cross;
+                                break;
+                            case GameButtonStates.Cross:
+                                imageButton.SetImageResource(Resource.Mipmap.circle);
+                                _gameBoard[view.Id] = GameButtonStates.Circle;
+                                break;
+                            case GameButtonStates.Standard:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
