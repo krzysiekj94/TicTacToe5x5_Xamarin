@@ -18,4 +18,12 @@ namespace TicTacToeXamarin.Game
         Cross,
         Standard
     }
+
+    enum GameStatus
+    {
+        Continue,
+        Win,
+        Tie,
+        End,
+    }
 }

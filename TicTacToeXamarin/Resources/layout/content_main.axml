@@ -74,7 +74,8 @@
 				android:adjustViewBounds="true"
 				android:scaleType="fitCenter"
 				android:onClick="OnButtonClick" />
-		</TableRow><TableRow>
+		</TableRow>
+		<TableRow>
 			<ImageButton
 				android:src="@mipmap/ic_launcher"
 				android:layout_width="70dp"
@@ -105,7 +106,40 @@
 				android:adjustViewBounds="true"
 				android:scaleType="fitCenter"
 				android:onClick="OnButtonClick" />
-		</TableRow><TableRow>
+		</TableRow>
+		<TableRow>
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+			<ImageButton
+				android:src="@mipmap/ic_launcher"
+				android:layout_width="70dp"
+				android:adjustViewBounds="true"
+				android:scaleType="fitCenter"
+				android:onClick="OnButtonClick" />
+		</TableRow>
+				<TableRow>
 			<ImageButton
 				android:src="@mipmap/ic_launcher"
 				android:layout_width="70dp"
