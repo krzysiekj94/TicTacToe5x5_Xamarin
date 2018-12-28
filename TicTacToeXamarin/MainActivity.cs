@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Views;
@@ -12,7 +13,7 @@ using TicTacToeXamarin.Game;
 
 namespace TicTacToeXamarin
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity
     {
         private const int SIZE_OF_BOARD_VALUE = 5;
@@ -20,26 +21,67 @@ namespace TicTacToeXamarin
         private TableLayout _gameBoardTableLayout;
         private Dictionary<int, GameButtonStates> _gameBoardDictionary;
         private GameButtonStates[,] _gameBoardArray;
-        private GameButtonStates _symbolGamer;
+        private GameButtonStates _currentSymbolGamer;
+        private TextView _circleTextView;
+        private TextView _crossTextView;
+        private TextView _nextMoveTextView;
         int iScoreOfCirclePlayer;
         int iScoreOfCrossPlayer;
         int iAmountOfMoves;
 
         public MainActivity()
         {
-            _symbolGamer = GameButtonStates.Circle;
+            _currentSymbolGamer = GameButtonStates.Circle;
             iScoreOfCirclePlayer = 0;
             iScoreOfCrossPlayer = 0;
             iAmountOfMoves = 0;
         }
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate( Bundle savedInstanceState )
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
+            InitTextViews();
             InitBoard();
+        }
+
+        private void InitTextViews()
+        {
+            _circleTextView = FindViewById<TextView>( Resource.Id.circleTextView );
+            _crossTextView = FindViewById<TextView>( Resource.Id.crossTextView );
+            _nextMoveTextView = FindViewById<TextView>( Resource.Id.nextMoveTextView );
+
+            _circleTextView.SetBackgroundColor(Android.Graphics.Color.Firebrick);
+            _crossTextView.SetBackgroundColor(Android.Graphics.Color.Coral);
+            _nextMoveTextView.SetBackgroundColor(Android.Graphics.Color.Azure);
+
+            _circleTextView.Text = GetScoreText(GameButtonStates.Circle, iScoreOfCirclePlayer);
+            _crossTextView.Text = GetScoreText(GameButtonStates.Cross, iScoreOfCrossPlayer);
+            _nextMoveTextView.Text = GetNextMovePlayerName();
+        }
+
+        private string GetNextMovePlayerName()
+        {
+            string sNextPlayerString = "Nieznany!";
+
+            switch( _currentSymbolGamer )
+            {
+                case GameButtonStates.Circle:
+                    sNextPlayerString = "Kółko";
+                    break;
+                case GameButtonStates.Cross:
+                    sNextPlayerString = "Krzyżyk";
+                    break;
+                case GameButtonStates.Standard:
+                    sNextPlayerString = "Standard";
+                    break;
+                default:
+                    break;
+            }
+
+            return Convert.ToString( "Następny ruch: " + sNextPlayerString );
         }
 
         private void InitBoard()
@@ -83,15 +125,15 @@ namespace TicTacToeXamarin
 
         private void Win()
         {
-            if( _symbolGamer == GameButtonStates.Circle )
+            if( _currentSymbolGamer == GameButtonStates.Circle )
             {
                 iScoreOfCirclePlayer++;
-                //label1.Text = Convert.ToString(score1);
+                _circleTextView.Text = GetScoreText( GameButtonStates.Circle, iScoreOfCirclePlayer );
             }
             else
             {
                 iScoreOfCrossPlayer++;
-                //label3.Text = Convert.ToString(score2);
+                _crossTextView.Text = GetScoreText(GameButtonStates.Cross, iScoreOfCrossPlayer);
             }
 
             using( var alertDialogBuilder = new Android.Support.V7.App.AlertDialog.Builder( this ) )
@@ -107,27 +149,53 @@ namespace TicTacToeXamarin
             }
         }
 
+        private string GetScoreText( GameButtonStates eGamePlayer, int iScoreOfCirclePlayer)
+        {
+            string sPlayerName = "Nieznany";
+
+            switch( eGamePlayer )
+            {
+                case GameButtonStates.Circle:
+                    sPlayerName = "Kółko";
+                    break;
+                case GameButtonStates.Cross:
+                    sPlayerName = "Krzyżyk";
+                    break;
+                case GameButtonStates.Standard:
+                    sPlayerName = "Standard";
+                    break;
+                default:
+                    break;
+            }
+
+            return Convert.ToString(sPlayerName + ": " + iScoreOfCirclePlayer + " pkt");
+        }
+
         private void OkAction( object sender, DialogClickEventArgs e )
         {
             ClearGameBoard();
 
-            if ( _symbolGamer == GameButtonStates.Cross )
+            if ( _currentSymbolGamer == GameButtonStates.Cross )
             {
-                _symbolGamer = GameButtonStates.Circle;
+                _currentSymbolGamer = GameButtonStates.Circle;
             }
             else
             {
-                _symbolGamer = GameButtonStates.Cross;
+                _currentSymbolGamer = GameButtonStates.Cross;
             }
 
-            Toast.MakeText( ApplicationContext, "Gracz 1: " + iScoreOfCirclePlayer + "\nGracz 2: " + iScoreOfCrossPlayer, ToastLength.Short ).Show();
+            SetSymbolNextGamer();
+
+            Toast.MakeText( ApplicationContext, GetScoreText(GameButtonStates.Circle, iScoreOfCirclePlayer) 
+                + "\n" + GetScoreText(GameButtonStates.Cross, iScoreOfCrossPlayer), ToastLength.Short ).Show();
         }
 
       private void CancelAction( object sender, DialogClickEventArgs e )
       {
             ClearGameBoard();
-            Toast.MakeText(ApplicationContext, "Koniec gry!", ToastLength.Long).Show();
-      }
+            Toast.MakeText(ApplicationContext, "Koniec gry Tic-Tac-Toe!", ToastLength.Long).Show();
+            base.Finish();
+        }
 
         private void GenerateBoardButtonsID()
         {
@@ -206,9 +274,9 @@ namespace TicTacToeXamarin
                     && gameButtonState == GameButtonStates.Standard )
                 {
                     iAmountOfMoves++;
-                    _gameBoardArray[ boardButtonPoint[0], boardButtonPoint[1] ] = _symbolGamer;
+                    _gameBoardArray[ boardButtonPoint[0], boardButtonPoint[1] ] = _currentSymbolGamer;
 
-                    switch( _symbolGamer )
+                    switch( _currentSymbolGamer )
                     {
                         case GameButtonStates.Circle:
                             imageButton.SetImageResource( Resource.Mipmap.circle );
@@ -265,17 +333,19 @@ namespace TicTacToeXamarin
 
         private void SetSymbolNextGamer()
         {
-            switch(_symbolGamer)
+            switch(_currentSymbolGamer)
             {
                 case GameButtonStates.Circle:
-                    _symbolGamer = GameButtonStates.Cross;
+                    _currentSymbolGamer = GameButtonStates.Cross;
                     break;
                 case GameButtonStates.Cross:
-                    _symbolGamer = GameButtonStates.Circle;
+                    _currentSymbolGamer = GameButtonStates.Circle;
                     break;
                 default:
                     break;
             }
+
+            _nextMoveTextView.Text = GetNextMovePlayerName();
         }
 
         private GameStatus GetGameStatus(int[] boardButtonPoint)
@@ -326,7 +396,7 @@ namespace TicTacToeXamarin
             GameStatus eWinStatus = GameStatus.Continue;
             Dictionary<int, int> rememberDictionary = new Dictionary<int, int>();
 
-            if( _gameBoardArray[ boardButtonPoint[0], boardButtonPoint[1] ] == _symbolGamer )
+            if( _gameBoardArray[ boardButtonPoint[0], boardButtonPoint[1] ] == _currentSymbolGamer )
             {
                 rememberDictionary = GetRememberDictionaryElements(boardButtonPoint);
 
@@ -396,7 +466,7 @@ namespace TicTacToeXamarin
                         if (boardCombinationYArray[iCounterCombinationY] >= 0
                             && boardCombinationYArray[iCounterCombinationY] < SIZE_OF_BOARD_VALUE)
                         {
-                            if (_gameBoardArray[boardCombinationXArray[iCounterCombinationX], boardCombinationYArray[iCounterCombinationY]] == _symbolGamer)
+                            if (_gameBoardArray[boardCombinationXArray[iCounterCombinationX], boardCombinationYArray[iCounterCombinationY]] == _currentSymbolGamer)
                             {
                                 if (!rememberDictionary.ContainsKey(boardCombinationXArray[iCounterCombinationX]))
                                 {
@@ -448,7 +518,7 @@ namespace TicTacToeXamarin
             {   
                 for( int iIteratorRow = 0; iIteratorRow < SIZE_OF_BOARD_VALUE; iIteratorRow++ )
                 {
-                    if( _gameBoardArray[ iIteratorRow, iIteratorColumn ] == _symbolGamer )
+                    if( _gameBoardArray[ iIteratorRow, iIteratorColumn ] == _currentSymbolGamer )
                     {
                         iCountSameSymbols++;
 
@@ -482,7 +552,7 @@ namespace TicTacToeXamarin
             {
                 for (int iIteratorColumn = 0; iIteratorColumn < SIZE_OF_BOARD_VALUE; iIteratorColumn++)
                 {
-                    if (_gameBoardArray[iIteratorRow, iIteratorColumn] == _symbolGamer)
+                    if (_gameBoardArray[iIteratorRow, iIteratorColumn] == _currentSymbolGamer)
                     {
                         iCountSameSymbols++;
 
