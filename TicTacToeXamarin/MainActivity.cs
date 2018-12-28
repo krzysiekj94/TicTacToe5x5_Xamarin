@@ -25,6 +25,7 @@ namespace TicTacToeXamarin
         private TextView _circleTextView;
         private TextView _crossTextView;
         private TextView _nextMoveTextView;
+        private TextView _resultTextView;
         int iScoreOfCirclePlayer;
         int iScoreOfCrossPlayer;
         int iAmountOfMoves;
@@ -52,6 +53,7 @@ namespace TicTacToeXamarin
             _circleTextView = FindViewById<TextView>( Resource.Id.circleTextView );
             _crossTextView = FindViewById<TextView>( Resource.Id.crossTextView );
             _nextMoveTextView = FindViewById<TextView>( Resource.Id.nextMoveTextView );
+            _resultTextView = FindViewById<TextView>(Resource.Id.resultTextView);
 
             _circleTextView.SetBackgroundColor(Android.Graphics.Color.Firebrick);
             _crossTextView.SetBackgroundColor(Android.Graphics.Color.Coral);
@@ -60,6 +62,7 @@ namespace TicTacToeXamarin
             _circleTextView.Text = GetScoreText(GameButtonStates.Circle, iScoreOfCirclePlayer);
             _crossTextView.Text = GetScoreText(GameButtonStates.Cross, iScoreOfCrossPlayer);
             _nextMoveTextView.Text = GetNextMovePlayerName();
+            _resultTextView.Visibility = ViewStates.Invisible;
         }
 
         private string GetNextMovePlayerName()
@@ -136,7 +139,10 @@ namespace TicTacToeXamarin
                 _crossTextView.Text = GetScoreText(GameButtonStates.Cross, iScoreOfCrossPlayer);
             }
 
-            using( var alertDialogBuilder = new Android.Support.V7.App.AlertDialog.Builder( this ) )
+            _resultTextView.Text = "Wygrał: " + GetWinnerNameText();
+            _resultTextView.Visibility = ViewStates.Visible;
+
+            using ( var alertDialogBuilder = new Android.Support.V7.App.AlertDialog.Builder( this ) )
             {
                 string tieTitleString = "Czy chcesz zagrać ponownie:";
                 Android.Support.V7.App.AlertDialog myCustomDialog = null;
@@ -147,6 +153,28 @@ namespace TicTacToeXamarin
                 myCustomDialog = alertDialogBuilder.Create();
                 myCustomDialog.Show();
             }
+        }
+
+        private string GetWinnerNameText()
+        {
+            string sPlayerName = "Nieznany";
+
+            switch (_currentSymbolGamer)
+            {
+                case GameButtonStates.Circle:
+                    sPlayerName = "Kółko";
+                    break;
+                case GameButtonStates.Cross:
+                    sPlayerName = "Krzyżyk";
+                    break;
+                case GameButtonStates.Standard:
+                    sPlayerName = "Standard";
+                    break;
+                default:
+                    break;
+            }
+
+            return Convert.ToString(sPlayerName);
         }
 
         private string GetScoreText( GameButtonStates eGamePlayer, int iScoreOfCirclePlayer)
@@ -185,6 +213,7 @@ namespace TicTacToeXamarin
             }
 
             SetSymbolNextGamer();
+            _resultTextView.Visibility = ViewStates.Invisible;
 
             Toast.MakeText( ApplicationContext, GetScoreText(GameButtonStates.Circle, iScoreOfCirclePlayer) 
                 + "\n" + GetScoreText(GameButtonStates.Cross, iScoreOfCrossPlayer), ToastLength.Short ).Show();
@@ -193,8 +222,8 @@ namespace TicTacToeXamarin
       private void CancelAction( object sender, DialogClickEventArgs e )
       {
             ClearGameBoard();
-            Toast.MakeText(ApplicationContext, "Koniec gry Tic-Tac-Toe!", ToastLength.Long).Show();
-            base.Finish();
+            _resultTextView.Visibility = ViewStates.Invisible;
+            FinishAffinity();
         }
 
         private void GenerateBoardButtonsID()
@@ -255,8 +284,14 @@ namespace TicTacToeXamarin
             return true;
         }
 
-        [Export("OnButtonClick")]
-        public void OnButtonClick( View gameBoardButtonView )
+        [Export("OnGameExit")]
+        public void OnGameExit( View gameBoardButtonView )
+        {
+            FinishAffinity();
+        }
+
+        [Export("OnGameBoardButtonClick")]
+        public void OnGameBoardButtonClick( View gameBoardButtonView )
         {
             GameButtonStates gameButtonState = GameButtonStates.Standard;
             ImageButton imageButton = null;

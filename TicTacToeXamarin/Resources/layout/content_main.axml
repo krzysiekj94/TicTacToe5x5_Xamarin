@@ -6,195 +6,234 @@
     android:layout_height="fill_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
-    <LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android" 
-	   android:orientation = "vertical" 
-	   android:layout_width = "match_parent" 
-	   android:layout_height = "match_parent"> 
-		<LinearLayout xmlns:android = "http://schemas.android.com/apk/res/android" 
-	   android:orientation="vertical" 
-	   android:layout_width="match_parent"
-	   android:layout_height="60dp"> 
+	<LinearLayout
+		xmlns:android = "http://schemas.android.com/apk/res/android"
+		android:orientation = "vertical"
+		android:layout_width = "match_parent"
+		android:layout_height = "match_parent">
+		<LinearLayout
+			xmlns:android = "http://schemas.android.com/apk/res/android"
+			android:orientation="vertical"
+			android:layout_width="match_parent"
+			android:layout_height="60dp">
 			<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="(Circle text view placeholder)"
-			android:id="@+id/circleTextView" />
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="(Circle text view placeholder)"
+				android:id="@+id/circleTextView" />
 			<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="(Cross Text View placeholder)"
-			android:id="@+id/crossTextView" />
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="(Cross Text View placeholder)"
+				android:id="@+id/crossTextView" />
 			<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:text="(Next move text view placeholder)"
-			android:id="@+id/nextMoveTextView" />
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="(Next move text view placeholder)"
+				android:id="@+id/nextMoveTextView" />
 		</LinearLayout>
-		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:id="@+id/boardTableLayout"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:stretchColumns="*">
-		<TableRow>
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-		</TableRow>
-		<TableRow>
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-		</TableRow>
-		<TableRow>
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-		</TableRow>
-		<TableRow>
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-		</TableRow>
-				<TableRow>
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-			<ImageButton
-				android:src="@mipmap/ic_launcher"
-				android:layout_width="70dp"
-				android:adjustViewBounds="true"
-				android:scaleType="fitCenter"
-				android:onClick="OnButtonClick" />
-		</TableRow>
-</TableLayout>
+		<TableLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/boardTableLayout"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:stretchColumns="*">
+			<TableRow>
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+			</TableRow>
+			<TableRow>
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+			</TableRow>
+			<TableRow>
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+			</TableRow>
+			<TableRow>
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+			</TableRow>
+			<TableRow>
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+				<ImageButton
+					android:src="@mipmap/ic_launcher"
+					android:layout_width="70dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnGameBoardButtonClick" />
+			</TableRow>
+		</TableLayout>
+		<LinearLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:orientation= "vertical"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="(Cross Text View placeholder)"
+				android:textSize="20sp"
+				android:layout_marginTop="20dp"
+				android:layout_gravity="center"
+				android:id="@+id/resultTextView" />
+		</LinearLayout>
+		<RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android" 
+		   android:orientation="horizontal" 
+		   android:layout_width="wrap_content" 
+		   android:layout_height="match_parent"> 
+			<Button
+				android:text="MENU"
+				android:layout_width="100dp"
+				android:layout_height="wrap_content"
+				android:background="@android:color/holo_green_dark"
+				android:id="@+id/menuButton"
+				android:layout_alignParentLeft="true"
+				android:layout_alignParentBottom="true"/>
+			<Button
+				android:text="WYJŚCIE"
+				android:layout_width="100dp"
+				android:layout_height="wrap_content"
+				android:background="@android:color/holo_green_dark"
+				android:id="@+id/exitButton"
+				android:layout_alignParentRight="true"
+				android:layout_alignParentBottom="true"
+				android:onClick="OnGameExit"/>
+		</RelativeLayout>
 	</LinearLayout>
 </RelativeLayout>
