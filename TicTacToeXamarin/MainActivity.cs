@@ -4,8 +4,6 @@ using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Support.Design.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
@@ -17,81 +15,23 @@ namespace TicTacToeXamarin
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true)]
     public class MainActivity : AppCompatActivity
     {
-        private const int SIZE_OF_BOARD = 5;
-
+        private const int SIZE_OF_BOARD_VALUE = 5;
+        private const int COMPLETE_TILE_TO_WIN_VALUE = 3;
         private TableLayout _gameBoardTableLayout;
         private Dictionary<int, GameButtonStates> _gameBoardDictionary;
+        private GameButtonStates[,] _gameBoardArray;
+        private GameButtonStates _symbolGamer;
+        int iScoreOfCirclePlayer;
+        int iScoreOfCrossPlayer;
+        int iAmountOfMoves;
 
-        private static GameButtonStates _symbolGamer = GameButtonStates.Circle;
-        int score1 = 0, score2 = 0, ruchy = 0;
-        private static bool isWin = false;
-        private static GameButtonStates[,] _gameBoardArray;
-
-
-        private void Win(GameButtonStates zwyciezca)
+        public MainActivity()
         {
-
-            if( zwyciezca == GameButtonStates.Circle )
-            {
-                score1++;
-                //label1.Text = Convert.ToString(score1);
-            }
-            else
-            {
-                score2++;
-                //label3.Text = Convert.ToString(score2);
-            }
-
-            using( var builder = new Android.Support.V7.App.AlertDialog.Builder( this ) )
-            {
-                var title = "Please edit your details:";
-                builder.SetTitle(title);
-                builder.SetPositiveButton("OK", OkAction);
-                builder.SetNegativeButton("Cancel", CancelAction);
-                var myCustomDialog = builder.Create();
-                myCustomDialog.Show();
-            }
+            _symbolGamer = GameButtonStates.Circle;
+            iScoreOfCirclePlayer = 0;
+            iScoreOfCrossPlayer = 0;
+            iAmountOfMoves = 0;
         }
-
-        private void OkAction(object sender, DialogClickEventArgs e)
-        {
-            ClearGameBoard();
-            ruchy = 0;
-
-            if ( _symbolGamer == GameButtonStates.Cross )
-            {
-                _symbolGamer = GameButtonStates.Circle;
-            }
-            else
-            {
-                _symbolGamer = GameButtonStates.Cross;
-            }
-
-            Toast.MakeText( ApplicationContext, "Gracz 1: " + score1 + "\nGracz 2: " + score2, ToastLength.Short ).Show();
-        }
-
-        private void ClearGameBoard()
-        {
-            ClearGameBoardArray();
-            ResetGameBoardDictionary();
-            SetStandardImageForBoardButtons();
-        }
-
-        private void ResetGameBoardDictionary()
-        {
-            List<int> gameBoardDictionaryKeysList = _gameBoardDictionary.Keys.ToList();
-
-            foreach( int iGameBoardElementId in gameBoardDictionaryKeysList )
-            {
-                _gameBoardDictionary[iGameBoardElementId] = GameButtonStates.Standard;
-            }
-        }
-
-      private void CancelAction( object sender, DialogClickEventArgs e )
-      {
-            ClearGameBoard();
-            Toast.MakeText(ApplicationContext, "Koniec gry!", ToastLength.Long).Show();
-      }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -104,7 +44,7 @@ namespace TicTacToeXamarin
 
         private void InitBoard()
         {
-            _gameBoardArray = new GameButtonStates[ SIZE_OF_BOARD, SIZE_OF_BOARD ];
+            _gameBoardArray = new GameButtonStates[SIZE_OF_BOARD_VALUE, SIZE_OF_BOARD_VALUE];
             _gameBoardDictionary = new Dictionary<int, GameButtonStates>();
             _gameBoardTableLayout = FindViewById<TableLayout>(Resource.Id.boardTableLayout);
             ClearGameBoardArray();
@@ -112,27 +52,104 @@ namespace TicTacToeXamarin
             SetStandardImageForBoardButtons();
         }
 
+        private void ClearGameBoard()
+        {
+            ClearGameBoardArray();
+            ResetGameBoardDictionary();
+            SetStandardImageForBoardButtons();
+            iAmountOfMoves = 0;
+        }
+
+        private void ResetGameBoardDictionary()
+        {
+            List<int> gameBoardDictionaryKeysList = _gameBoardDictionary.Keys.ToList();
+
+            foreach (int iGameBoardElementId in gameBoardDictionaryKeysList)
+            {
+                _gameBoardDictionary[iGameBoardElementId] = GameButtonStates.Standard;
+            }
+        }
+
+        private void ClearGameBoardArray()
+        {
+            for (int iBoardIterator = 0; iBoardIterator < SIZE_OF_BOARD_VALUE; iBoardIterator++)
+            {
+                for (int jBoardIterator = 0; jBoardIterator < SIZE_OF_BOARD_VALUE; jBoardIterator++)
+                {
+                    _gameBoardArray[iBoardIterator, jBoardIterator] = GameButtonStates.Standard;
+                }
+            }
+        }
+
+        private void Win()
+        {
+            if( _symbolGamer == GameButtonStates.Circle )
+            {
+                iScoreOfCirclePlayer++;
+                //label1.Text = Convert.ToString(score1);
+            }
+            else
+            {
+                iScoreOfCrossPlayer++;
+                //label3.Text = Convert.ToString(score2);
+            }
+
+            using( var alertDialogBuilder = new Android.Support.V7.App.AlertDialog.Builder( this ) )
+            {
+                string tieTitleString = "Czy chcesz zagrać ponownie:";
+                Android.Support.V7.App.AlertDialog myCustomDialog = null;
+
+                alertDialogBuilder.SetTitle(tieTitleString);
+                alertDialogBuilder.SetPositiveButton( "Tak", OkAction );
+                alertDialogBuilder.SetNegativeButton( "Nie", CancelAction );
+                myCustomDialog = alertDialogBuilder.Create();
+                myCustomDialog.Show();
+            }
+        }
+
+        private void OkAction( object sender, DialogClickEventArgs e )
+        {
+            ClearGameBoard();
+
+            if ( _symbolGamer == GameButtonStates.Cross )
+            {
+                _symbolGamer = GameButtonStates.Circle;
+            }
+            else
+            {
+                _symbolGamer = GameButtonStates.Cross;
+            }
+
+            Toast.MakeText( ApplicationContext, "Gracz 1: " + iScoreOfCirclePlayer + "\nGracz 2: " + iScoreOfCrossPlayer, ToastLength.Short ).Show();
+        }
+
+      private void CancelAction( object sender, DialogClickEventArgs e )
+      {
+            ClearGameBoard();
+            Toast.MakeText(ApplicationContext, "Koniec gry!", ToastLength.Long).Show();
+      }
+
         private void GenerateBoardButtonsID()
         {
             Context applicationContext = Application.Context;
             TableRow viewTableRow = null;
-            View rowView = null;
-            int idTile = 0;
+            View gameRowView = null;
+            int iIdTile = 0;
             ImageButton imageButton;
 
             for( int iRowIterator = 0; iRowIterator < _gameBoardTableLayout.ChildCount; iRowIterator++ )
             {
-                rowView = _gameBoardTableLayout.GetChildAt(iRowIterator);
+                gameRowView = _gameBoardTableLayout.GetChildAt(iRowIterator);
 
-                if (rowView != null && (rowView is TableRow))
+                if (gameRowView != null && (gameRowView is TableRow))
                 {
-                    viewTableRow = (TableRow)rowView;
+                    viewTableRow = (TableRow)gameRowView;
                     for (int iTabRowChildIterator = 0; iTabRowChildIterator < viewTableRow.ChildCount; iTabRowChildIterator++)
                     {
                         imageButton = (ImageButton)viewTableRow.GetChildAt(iTabRowChildIterator);
-                        imageButton.Id = idTile;
-                        _gameBoardDictionary.Add(idTile, GameButtonStates.Standard);
-                        idTile++;
+                        imageButton.Id = iIdTile;
+                        _gameBoardDictionary.Add(iIdTile, GameButtonStates.Standard);
+                        iIdTile++;
                     }
                 }
             }
@@ -146,7 +163,7 @@ namespace TicTacToeXamarin
             {
                 boardImageButton = (ImageButton)_gameBoardTableLayout.FindViewById( gameDictionaryElement.Key );
 
-                if(boardImageButton != null )
+                if( boardImageButton != null )
                 {
                     switch( gameDictionaryElement.Value )
                     {
@@ -164,56 +181,10 @@ namespace TicTacToeXamarin
             }
         }
 
-        private void ClearGameBoardArray()
-        {
-            for (int iBoardIterator = 0; iBoardIterator < SIZE_OF_BOARD; iBoardIterator++)
-            {
-                for (int jBoardIterator = 0; jBoardIterator < SIZE_OF_BOARD; jBoardIterator++)
-                {
-                    _gameBoardArray[iBoardIterator, jBoardIterator] = GameButtonStates.Standard;
-                }
-            }
-        }
-
         public override bool OnCreateOptionsMenu( IMenu menu )
         {
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);
             return true;
-        }
-
-        private void Remis()
-        {
-            if( true /*MessageBox.Show("Remis. Zagrac ponownie?", "KONIEC", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes*/ )
-            {
-                for (int i = 0; i < SIZE_OF_BOARD; i++)
-                    for (int j = 0; j < SIZE_OF_BOARD; j++)
-                        _gameBoardArray[ i, j ] = GameButtonStates.Standard;
-
-                for( int i = 0; i < SIZE_OF_BOARD; i++ )
-                {
-                    for( int j = 0; j < SIZE_OF_BOARD; j++ )
-                    {
-                        _gameBoardArray[ i, j ] = GameButtonStates.Standard;
-                    }  
-                }
-
-                foreach (var gameElement in _gameBoardDictionary)
-                {
-                    ImageButton imageButton = (ImageButton)_gameBoardTableLayout.FindViewById(gameElement.Key);
-                    imageButton.SetImageResource(Resource.Mipmap.ic_launcher);
-                }
-
-                if (_symbolGamer == GameButtonStates.Cross)
-                {
-                    _symbolGamer = GameButtonStates.Circle;
-                }
-                else
-                {
-                    _symbolGamer = GameButtonStates.Cross;
-                }
-
-                ruchy = 0;
-            }
         }
 
         [Export("OnButtonClick")]
@@ -234,7 +205,7 @@ namespace TicTacToeXamarin
                 if( imageButton != null 
                     && gameButtonState == GameButtonStates.Standard )
                 {
-                    ruchy += 1;
+                    iAmountOfMoves++;
                     _gameBoardArray[ boardButtonPoint[0], boardButtonPoint[1] ] = _symbolGamer;
 
                     switch( _symbolGamer )
@@ -251,70 +222,44 @@ namespace TicTacToeXamarin
                             break;
                     }
 
-
                     switch( GetGameStatus( boardButtonPoint ) )
                     {
                         case GameStatus.Continue:
                             SetSymbolNextGamer();
                             break;
                         case GameStatus.End:
+                            EndGame();
                             break;
                         case GameStatus.Tie:
+                            Tie();
                             break;
                         case GameStatus.Win:
-                            Win( _symbolGamer );
+                            Win();
                             break;
 
                     }
-                    
-                    //UpdateTextbox();
-                    //Poziomo1( boardButtonPoint[0], boardButtonPoint[1] );
-                    //Pionowo1( boardButtonPoint[0], boardButtonPoint[1] );
-                    //UkosDol1( boardButtonPoint[0], boardButtonPoint[1] );
-
-                    /*
-                    if( isWin == true )
-                    {
-                        isWin = false;
-                        if (_symbolGamer == GameButtonStates.Circle)
-                        {
-                            imageButton.SetImageResource( Resource.Mipmap.cross );
-                            _gameBoardDictionary[gameBoardButtonView.Id] = GameButtonStates.Cross;
-                        }
-                        else
-                        {
-                            imageButton.SetImageResource( Resource.Mipmap.circle );
-                            _gameBoardDictionary[gameBoardButtonView.Id] = GameButtonStates.Circle;
-                        }
-                            
-                        Win( _symbolGamer );
-                    }
-                    else
-                    {
-                        if( _symbolGamer == GameButtonStates.Circle)
-                        {
-                            _symbolGamer = GameButtonStates.Cross;
-                            imageButton.SetImageResource( Resource.Mipmap.cross );
-                            _gameBoardDictionary[gameBoardButtonView.Id] = GameButtonStates.Cross;
-                            _nextMove = GameButtonStates.Circle;
-                        }
-                        else
-                        {
-                            _symbolGamer = GameButtonStates.Circle;
-                            imageButton.SetImageResource( Resource.Mipmap.circle );
-                            _gameBoardDictionary[gameBoardButtonView.Id] = GameButtonStates.Circle;
-                            _nextMove = GameButtonStates.Cross;
-                        }
-
-                        //labelRuch.Text = "Ruch gracza: " + gracz;
-                        //pictureBox1.Enabled = false;
-                        if (ruchy == 25)
-                        {
-                            Remis();
-                        }
-                    }
-                    */
                 }
+            }
+        }
+
+        private void EndGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Tie()
+        {
+            using( var builder = new Android.Support.V7.App.AlertDialog.Builder( this ) )
+            {
+                string tieTitleString = "Remis. Czy chcesz zagrać ponownie?";
+                Android.Support.V7.App.AlertDialog myCustomDialog = null;
+
+                builder.SetTitle( tieTitleString );
+                builder.SetPositiveButton( "Tak", OkAction );
+                builder.SetNegativeButton( "Nie", CancelAction );
+
+                myCustomDialog = builder.Create();
+                myCustomDialog.Show();
             }
         }
 
@@ -337,12 +282,29 @@ namespace TicTacToeXamarin
         {
             GameStatus eGameStatus = GameStatus.Continue;
 
-            eGameStatus = CheckWin(boardButtonPoint);
+            eGameStatus = CheckTie();
+
+            if( eGameStatus == GameStatus.Continue )
+            {
+                eGameStatus = CheckWin(boardButtonPoint);
+            }
 
             return eGameStatus;
         }
 
-        private GameStatus CheckWin(int[] boardButtonPoint)
+        private GameStatus CheckTie()
+        {
+            GameStatus eGameStatus = GameStatus.Continue;
+
+            if( iAmountOfMoves == 25 )
+            {
+                eGameStatus = GameStatus.Tie;
+            }
+
+            return eGameStatus;
+        }
+
+        private GameStatus CheckWin( int[] boardButtonPoint )
         {
             GameStatus eWinStatus = CheckHorizontally();
 
@@ -352,18 +314,65 @@ namespace TicTacToeXamarin
 
                 if( eWinStatus != GameStatus.Win )
                 {
-                    eWinStatus = CheckCrossing(boardButtonPoint);
+                    eWinStatus = CheckCrossing( boardButtonPoint );
                 }
             }
 
             return eWinStatus;
-
         }
 
-        private GameStatus CheckCrossing(int[] boardButtonPoint)
+        private GameStatus CheckCrossing( int[] boardButtonPoint )
         {
             GameStatus eWinStatus = GameStatus.Continue;
-            int iCounter = 0;
+            Dictionary<int, int> rememberDictionary = new Dictionary<int, int>();
+
+            if( _gameBoardArray[ boardButtonPoint[0], boardButtonPoint[1] ] == _symbolGamer )
+            {
+                rememberDictionary = GetRememberDictionaryElements(boardButtonPoint);
+
+                if( rememberDictionary.Count >= COMPLETE_TILE_TO_WIN_VALUE )
+                {
+                    rememberDictionary = SortRememberElementsDictionaryByKey( rememberDictionary );
+                    eWinStatus = GetStatusFromCrossing( rememberDictionary );
+                }
+            }
+
+            return eWinStatus;
+        }
+
+        private GameStatus GetStatusFromCrossing( Dictionary<int, int> rememberDictionary )
+        {
+            List<int> rememberDictionaryList = rememberDictionary.Keys.ToList();
+            List<int> rememberDictionaryValueList = rememberDictionary.Values.ToList();
+            int iCrossNeighbourCounter = 0;
+            GameStatus eWinStatus = GameStatus.Continue;
+
+            for (int iRememberElemDictCounter = 1; iRememberElemDictCounter < rememberDictionaryList.Count; iRememberElemDictCounter++)
+            {
+                if (IsRightDifferenceBetweenCoordinate(rememberDictionaryList, rememberDictionaryValueList, iRememberElemDictCounter))
+                {
+                    iCrossNeighbourCounter++;
+
+                    if (iCrossNeighbourCounter == 2
+                        && IsRightDifferenceExtremeElements(rememberDictionaryList, rememberDictionaryValueList))
+                    {
+                        eWinStatus = GameStatus.Win;
+                        break;
+                    }
+                }
+                else
+                {
+                    iCrossNeighbourCounter = 0;
+                    continue;
+                }
+            }
+
+            return eWinStatus;
+        }
+
+        private Dictionary<int, int> GetRememberDictionaryElements(int[] boardButtonPoint )
+        {
+            Dictionary<int, int> rememberDictionary = new Dictionary<int, int>();
 
             int[] boardCombinationXArray = { boardButtonPoint[0] - 1,
                                              boardButtonPoint[0] - 2,
@@ -375,22 +384,21 @@ namespace TicTacToeXamarin
                                              boardButtonPoint[1] + 1,
                                              boardButtonPoint[1] + 2 };
 
-            Dictionary<int, int> rememberDictionary = new Dictionary<int, int>();
+            rememberDictionary.Add(boardButtonPoint[0], boardButtonPoint[1]);
 
-            if (_gameBoardArray[ boardButtonPoint[0], boardButtonPoint[1] ] == _symbolGamer )
+            for (int iCounterCombinationX = 0; iCounterCombinationX < boardCombinationXArray.Length; iCounterCombinationX++)
             {
-                for( int iCounterCombinationX = 0; iCounterCombinationX < boardCombinationXArray.Length; iCounterCombinationX++ )
+                if (boardCombinationXArray[iCounterCombinationX] >= 0
+                    && boardCombinationXArray[iCounterCombinationX] < SIZE_OF_BOARD_VALUE)
                 {
-                    if (boardCombinationXArray[iCounterCombinationX] >= 0 
-                        && boardCombinationXArray[iCounterCombinationX] < SIZE_OF_BOARD )
+                    for (int iCounterCombinationY = 0; iCounterCombinationY < boardCombinationYArray.Length; iCounterCombinationY++)
                     {
-                        for (int iCounterCombinationY = 0; iCounterCombinationY < boardCombinationYArray.Length; iCounterCombinationY++)
+                        if (boardCombinationYArray[iCounterCombinationY] >= 0
+                            && boardCombinationYArray[iCounterCombinationY] < SIZE_OF_BOARD_VALUE)
                         {
-                            if(boardCombinationYArray[iCounterCombinationY] >= 0 
-                                && boardCombinationYArray[iCounterCombinationY] < SIZE_OF_BOARD )
+                            if (_gameBoardArray[boardCombinationXArray[iCounterCombinationX], boardCombinationYArray[iCounterCombinationY]] == _symbolGamer)
                             {
-                                if(_gameBoardArray[ boardCombinationXArray[iCounterCombinationX], boardCombinationYArray[iCounterCombinationY] ] == _symbolGamer 
-                                    && !rememberDictionary.ContainsKey(boardCombinationXArray[iCounterCombinationX]))
+                                if (!rememberDictionary.ContainsKey(boardCombinationXArray[iCounterCombinationX]))
                                 {
                                     rememberDictionary.Add(boardCombinationXArray[iCounterCombinationX], boardCombinationYArray[iCounterCombinationY]);
                                 }
@@ -398,40 +406,37 @@ namespace TicTacToeXamarin
                         }
                     }
                 }
-
-                if(rememberDictionary.Count >= 2 )
-                {
-                    rememberDictionary.Add(boardButtonPoint[0], boardButtonPoint[1]);
-
-                    rememberDictionary = rememberDictionary
-                        .OrderBy(key => key.Key)
-                        .ToDictionary(c => c.Key, d => d.Value);
-
-                    List<int> rememberDictionaryList = rememberDictionary.Keys.ToList();
-                    List<int> rememberDictionaryValueList = rememberDictionary.Values.ToList();
-                    int differenceX = 0;
-                    int differenceY = 0;
-
-                    for (int i = 1; i < rememberDictionaryList.Count; i++)
-                    {
-                        differenceX = Math.Abs(rememberDictionaryList[i - 1] - rememberDictionaryList[i]);
-                        differenceY = Math.Abs(rememberDictionaryValueList[i - 1] - rememberDictionaryValueList[i]);
-
-                        if (differenceX == 1 && differenceY == 1 )
-                        {
-                            iCounter++;
-
-                            if (iCounter == 2)
-                            {
-                                eWinStatus = GameStatus.Win;
-                                break;
-                            }
-                        }
-                    }
-                }
             }
 
-            return eWinStatus;
+            return rememberDictionary;
+        }
+
+        private bool IsRightDifferenceBetweenCoordinate(List<int> rememberDictionaryList, List<int> rememberDictionaryValueList, int iRememberElemDictCounter)
+        {
+            return Math.Abs(rememberDictionaryList[iRememberElemDictCounter - 1] - rememberDictionaryList[iRememberElemDictCounter]) == 1
+                            && Math.Abs(rememberDictionaryValueList[iRememberElemDictCounter - 1] - rememberDictionaryValueList[iRememberElemDictCounter]) == 1;
+        }
+
+        private bool IsRightDifferenceExtremeElements(List<int> rememberDictionaryList, List<int> rememberDictionaryValueList)
+        {
+           return ( Math.Abs(rememberDictionaryList[0] - rememberDictionaryList[rememberDictionaryList.Count - 1]) == 2 )
+            && ( Math.Abs(rememberDictionaryValueList[0] - rememberDictionaryValueList[rememberDictionaryList.Count - 1]) == 2 );
+        }
+
+        private Dictionary<int, int> SortRememberElementsDictionaryByKey( Dictionary<int, int> rememberDictionary )
+        {
+           return rememberDictionary.OrderBy(key => key.Key)
+                .ToDictionary(c => c.Key, d => d.Value);
+        }
+
+        private bool IsTheSameYCoordination( Dictionary<int, int> rememberCoordinationDictionary )
+        {
+            var lookupTheSameCoordinationDictionary = rememberCoordinationDictionary
+                .ToLookup(x => x.Value, x => x.Key)
+                .Where( x => x.Count() > 1 );
+
+            return ( lookupTheSameCoordinationDictionary != null );
+
         }
 
         private GameStatus CheckVertically()
@@ -439,9 +444,9 @@ namespace TicTacToeXamarin
             GameStatus eWinStatus = GameStatus.Continue;
             int iCountSameSymbols = 0;
 
-            for( int iIteratorColumn = 0; iIteratorColumn < SIZE_OF_BOARD; iIteratorColumn++ )
+            for( int iIteratorColumn = 0; iIteratorColumn < SIZE_OF_BOARD_VALUE; iIteratorColumn++ )
             {   
-                for( int iIteratorRow = 0; iIteratorRow < SIZE_OF_BOARD; iIteratorRow++ )
+                for( int iIteratorRow = 0; iIteratorRow < SIZE_OF_BOARD_VALUE; iIteratorRow++ )
                 {
                     if( _gameBoardArray[ iIteratorRow, iIteratorColumn ] == _symbolGamer )
                     {
@@ -473,9 +478,9 @@ namespace TicTacToeXamarin
             GameStatus eWinStatus = GameStatus.Continue;
             int iCountSameSymbols = 0;
 
-            for (int iIteratorRow = 0; iIteratorRow < SIZE_OF_BOARD; iIteratorRow++)
+            for (int iIteratorRow = 0; iIteratorRow < SIZE_OF_BOARD_VALUE; iIteratorRow++)
             {
-                for (int iIteratorColumn = 0; iIteratorColumn < SIZE_OF_BOARD; iIteratorColumn++)
+                for (int iIteratorColumn = 0; iIteratorColumn < SIZE_OF_BOARD_VALUE; iIteratorColumn++)
                 {
                     if (_gameBoardArray[iIteratorRow, iIteratorColumn] == _symbolGamer)
                     {
@@ -508,9 +513,9 @@ namespace TicTacToeXamarin
             bool bIsGetCoordinate = false;
             int[] boardButtonCoordinatePointArray = new int[2];
 
-            for( int iIteratorX = 0; iIteratorX < SIZE_OF_BOARD; iIteratorX++ )
+            for( int iIteratorX = 0; iIteratorX < SIZE_OF_BOARD_VALUE; iIteratorX++ )
             {
-                for( int iIteratorY = 0; iIteratorY < SIZE_OF_BOARD; iIteratorY++)
+                for( int iIteratorY = 0; iIteratorY < SIZE_OF_BOARD_VALUE; iIteratorY++)
                 {
                     if( iButtonId == iCounterValue)
                     {
