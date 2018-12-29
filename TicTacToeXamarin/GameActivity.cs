@@ -29,6 +29,7 @@ namespace TicTacToeXamarin
         int iScoreOfCirclePlayer;
         int iScoreOfCrossPlayer;
         int iAmountOfMoves;
+        BluetoothDeviceInfo _oponentDeviceInfo;
 
         public GameActivity()
         {
@@ -36,6 +37,7 @@ namespace TicTacToeXamarin
             iScoreOfCirclePlayer = 0;
             iScoreOfCrossPlayer = 0;
             iAmountOfMoves = 0;
+            _oponentDeviceInfo = null;
         }
 
         protected override void OnCreate( Bundle savedInstanceState )
@@ -46,6 +48,7 @@ namespace TicTacToeXamarin
             SetSupportActionBar(toolbar);
             InitTextViews();
             InitBoard();
+            _oponentDeviceInfo = GameTools.bluetoothManager.GetBluetoothDeviceOpponent();
         }
 
         private void InitTextViews()

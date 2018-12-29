@@ -12,8 +12,6 @@
      android:layout_width="fill_parent"
      android:layout_height="fill_parent">
     <ListView
-        android:minWidth="25px"
-        android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/bluetoothDevicesList" />
@@ -22,8 +20,9 @@
 				android:layout_width="100dp"
 				android:layout_height="wrap_content"
 				android:background="@android:color/holo_green_dark"
-				android:id="@+id/bluetoothDeviceButton"
 				android:layout_alignParentBottom="true"
-				android:onClick="OnBluetoothDeviceClick"/>
+        android:layout_marginBottom ="20dp"
+        android:layout_centerHorizontal="true"
+				android:onClick="OnBluetoothDeviceClick" />
   </RelativeLayout>
 </RelativeLayout>

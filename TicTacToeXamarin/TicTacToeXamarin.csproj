@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="BluetoothDeviceInfo.cs" />
     <Compile Include="BluetoothListAdapter.cs" />
+    <Compile Include="GameTools.cs" />
     <Compile Include="MenuActivity.cs" />
     <Compile Include="BluetoothManager.cs" />
     <Compile Include="Game\GameBoard.cs" />

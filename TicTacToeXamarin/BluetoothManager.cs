@@ -16,10 +16,12 @@ namespace TicTacToeXamarin
     class BluetoothManager
     {
         BluetoothAdapter _bluetoothAdapter;
+        BluetoothDeviceInfo _blueToothOpponentDevice;
         Dictionary<string, string> _bluetoothDevicesDictionary;
 
         public BluetoothManager()
         {
+            _blueToothOpponentDevice = null;
             _bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
 
             if ( _bluetoothAdapter == null )
@@ -38,6 +40,16 @@ namespace TicTacToeXamarin
             {
                 _bluetoothDevicesDictionary.Add( device.Name, device.Address );
             }
+        }
+
+        public void SetBluetoothDeviceOpponent( BluetoothDeviceInfo bluetoothDeviceOpponentInfo )
+        {
+            _blueToothOpponentDevice = bluetoothDeviceOpponentInfo;
+        }
+
+        public BluetoothDeviceInfo GetBluetoothDeviceOpponent()
+        {
+            return _blueToothOpponentDevice;
         }
 
         public Dictionary<string, string> GetBluetoothDevicesDictionary()

@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
-using static Android.Graphics.Interpolator;
+using Java.Interop;
 
 namespace TicTacToeXamarin
 {
@@ -22,6 +17,15 @@ namespace TicTacToeXamarin
         ListView _bluetoothDevicesList;
         BluetoothManager _bluetoothManager;
         List<BluetoothDeviceInfo> _bluetoothDeviceInfoList;
+        BluetoothDeviceInfo _currentSelectedDevice;
+
+        public SearchActivity()
+        {
+            _bluetoothDevicesList = null;
+            _currentSelectedDevice = null;
+            _bluetoothManager = new BluetoothManager();
+            _bluetoothDeviceInfoList = new List<BluetoothDeviceInfo>();
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -30,26 +34,39 @@ namespace TicTacToeXamarin
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar( toolbar );
             _bluetoothDevicesList = FindViewById<ListView>( Resource.Id.bluetoothDevicesList );
-            _bluetoothDeviceInfoList = new List<BluetoothDeviceInfo>();
 
-            _bluetoothManager = new BluetoothManager();
+            LoadBluetoothDeviceList();
 
-            foreach (var device in _bluetoothManager.GetBluetoothDevicesDictionary() )
+            _bluetoothDevicesList.ItemClick += OnListItemClick;
+            _bluetoothDevicesList.Adapter = new BluetoothListAdapter( this, _bluetoothDeviceInfoList );
+        }
+
+        private void LoadBluetoothDeviceList()
+        {
+            foreach (var device in _bluetoothManager.GetBluetoothDevicesDictionary())
             {
                 _bluetoothDeviceInfoList.Add( new BluetoothDeviceInfo()
-                { name = device.Key,
+                {
+                    name = device.Key,
                     mac = device.Value
                 });
             }
-
-            _bluetoothDevicesList.ItemClick += OnListItemClick;
-            _bluetoothDevicesList.Adapter = new BluetoothListAdapter(this, _bluetoothDeviceInfoList);
         }
 
-        private void OnListItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        private void OnListItemClick( object sender, AdapterView.ItemClickEventArgs eventClickItem )
         {
-            BluetoothDeviceInfo item = _bluetoothDeviceInfoList.ElementAt( e.Position );
-            // Do whatever you like here
+            if( eventClickItem != null )
+            {
+                _currentSelectedDevice = _bluetoothDeviceInfoList.ElementAt( eventClickItem.Position );
+            }
+        }
+
+        [Export("OnBluetoothDeviceClick")]
+        public void OnBluetoothDeviceClick( View gameBoardButtonView )
+        {
+            GameTools.bluetoothManager.SetBluetoothDeviceOpponent( _currentSelectedDevice );
+            Intent gameIntent = new Intent( this, typeof( GameActivity ) );
+            StartActivity( gameIntent );
         }
     }
 }
