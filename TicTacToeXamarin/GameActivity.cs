@@ -13,8 +13,8 @@ using TicTacToeXamarin.Game;
 
 namespace TicTacToeXamarin
 {
-    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainActivity : AppCompatActivity
+    [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", ScreenOrientation = ScreenOrientation.Portrait)]
+    public class GameActivity : AppCompatActivity
     {
         private const int SIZE_OF_BOARD_VALUE = 5;
         private const int COMPLETE_TILE_TO_WIN_VALUE = 3;
@@ -30,7 +30,7 @@ namespace TicTacToeXamarin
         int iScoreOfCrossPlayer;
         int iAmountOfMoves;
 
-        public MainActivity()
+        public GameActivity()
         {
             _currentSymbolGamer = GameButtonStates.Circle;
             iScoreOfCirclePlayer = 0;
@@ -41,7 +41,7 @@ namespace TicTacToeXamarin
         protected override void OnCreate( Bundle savedInstanceState )
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.activity_main);
+            SetContentView(Resource.Layout.game_activity);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
             InitTextViews();
