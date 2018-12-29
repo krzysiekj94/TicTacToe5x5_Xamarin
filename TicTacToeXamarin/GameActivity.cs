@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Android.App;
+using Android.Bluetooth;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
@@ -16,6 +18,7 @@ namespace TicTacToeXamarin
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme.NoActionBar", ScreenOrientation = ScreenOrientation.Portrait)]
     public class GameActivity : AppCompatActivity
     {
+        const int REQUEST_ENABLE_BT = 3;
         private const int SIZE_OF_BOARD_VALUE = 5;
         private const int COMPLETE_TILE_TO_WIN_VALUE = 3;
         private TableLayout _gameBoardTableLayout;
@@ -29,7 +32,12 @@ namespace TicTacToeXamarin
         int iScoreOfCirclePlayer;
         int iScoreOfCrossPlayer;
         int iAmountOfMoves;
+
         BluetoothDeviceInfo _oponentDeviceInfo;
+        BluetoothAdapter _bluetoothAdapter;
+        BluetoothService _chatService;
+        DiscoverableModeReceiver _receiver;
+        GameMessageHandler _gameMessageHandler;
 
         public GameActivity()
         {
@@ -38,17 +46,83 @@ namespace TicTacToeXamarin
             iScoreOfCrossPlayer = 0;
             iAmountOfMoves = 0;
             _oponentDeviceInfo = null;
+            _chatService = null;
+            _bluetoothAdapter = null;
         }
 
         protected override void OnCreate( Bundle savedInstanceState )
         {
             base.OnCreate(savedInstanceState);
+            _oponentDeviceInfo = GameTools.bluetoothManager.GetBluetoothDeviceOpponent();
             SetContentView(Resource.Layout.game_activity);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
             InitTextViews();
             InitBoard();
-            _oponentDeviceInfo = GameTools.bluetoothManager.GetBluetoothDeviceOpponent();
+            
+            _bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
+            _receiver = new DiscoverableModeReceiver();
+
+            if( _bluetoothAdapter == null )
+            {
+                Toast.MakeText(Application.Context, "Bluetooth is not available.", ToastLength.Long).Show();
+                FinishAndRemoveTask();
+            }
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+
+            if( !_bluetoothAdapter.IsEnabled )
+            {
+                var enableIntent = new Intent(BluetoothAdapter.ActionRequestEnable);
+                StartActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            }
+            else if( _chatService == null )
+            {
+                _gameMessageHandler = new GameMessageHandler();
+                SetupChat();
+                ConnectDevice( true );
+            }
+
+            var filter = new IntentFilter( BluetoothAdapter.ActionScanModeChanged );
+            RegisterReceiver( _receiver, filter );
+        }
+
+        void SetupChat()
+        {
+            _chatService = new BluetoothService( _gameMessageHandler );
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            if( _chatService != null )
+            {
+                if( _chatService.GetState() == TicTacToeXamarin.BluetoothService.STATE_NONE)
+                {
+                    _chatService.Start();
+                }
+            }
+        }
+
+        void ConnectDevice( bool bIsSecure )
+        {
+            string macAddressString = _oponentDeviceInfo.macDeviceString;
+            BluetoothDevice opponentBluetoothDevice = _bluetoothAdapter.GetRemoteDevice( macAddressString );
+            _chatService.Connect( opponentBluetoothDevice, bIsSecure );
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            UnregisterReceiver(_receiver);
+
+            if ( _chatService != null )
+            {
+                _chatService.Stop();
+            }
         }
 
         private void InitTextViews()
@@ -345,6 +419,27 @@ namespace TicTacToeXamarin
 
                     }
                 }
+            }
+
+            //TESTS
+            if( _oponentDeviceInfo.nameDeviceString != "Redmi" )
+            {
+                SendMessage("Redmi");
+            }
+            else
+            {
+                SendMessage("ZTE");
+            }
+        }
+
+
+        public void SendMessage( String messageString )
+        {
+            if( _chatService.GetState() == TicTacToeXamarin.BluetoothService.STATE_CONNECTED
+                && messageString.Length > 0 )
+            {
+                byte[] bytes = Encoding.ASCII.GetBytes( messageString );
+                _chatService.Write( bytes );
             }
         }
 

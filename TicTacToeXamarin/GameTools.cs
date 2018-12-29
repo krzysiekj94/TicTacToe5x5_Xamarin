@@ -12,9 +12,8 @@ using Android.Widget;
 
 namespace TicTacToeXamarin
 {
-    public class BluetoothDeviceInfo
+    static class GameTools
     {
-        public string nameDeviceString { get; set; }
-        public string macDeviceString { get; set; }
+        public static BluetoothManager bluetoothManager = new BluetoothManager();
     }
 }

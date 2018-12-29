@@ -57,8 +57,12 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BluetoothService.cs" />
     <Compile Include="BluetoothDeviceInfo.cs" />
     <Compile Include="BluetoothListAdapter.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="DiscoverableModeReceiver.cs" />
+    <Compile Include="GameMessageHandlercs.cs" />
     <Compile Include="GameTools.cs" />
     <Compile Include="MenuActivity.cs" />
     <Compile Include="BluetoothManager.cs" />

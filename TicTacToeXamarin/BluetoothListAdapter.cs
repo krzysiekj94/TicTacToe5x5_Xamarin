@@ -47,8 +47,8 @@ namespace TicTacToeXamarin
 			view = context.LayoutInflater.Inflate (Resource.Layout.ListItemRow, parent, false);
 
             BluetoothDeviceInfo item = this [position];
-		    view.FindViewById<TextView> (Resource.Id.NameDevice).Text = item.name;
-		    view.FindViewById<TextView>(Resource.Id.MacDevice).Text = item.mac;
+		    view.FindViewById<TextView> (Resource.Id.NameDevice).Text = item.nameDeviceString;
+		    view.FindViewById<TextView>(Resource.Id.MacDevice).Text = item.macDeviceString;
 
 		    return view;
         }

@@ -47,8 +47,8 @@ namespace TicTacToeXamarin
             {
                 _bluetoothDeviceInfoList.Add( new BluetoothDeviceInfo()
                 {
-                    name = device.Key,
-                    mac = device.Value
+                    nameDeviceString = device.Key,
+                    macDeviceString = device.Value
                 });
             }
         }
@@ -64,7 +64,7 @@ namespace TicTacToeXamarin
         [Export("OnBluetoothDeviceClick")]
         public void OnBluetoothDeviceClick( View gameBoardButtonView )
         {
-            GameTools.bluetoothManager.SetBluetoothDeviceOpponent( _currentSelectedDevice );
+            GameTools.bluetoothManager.SetBluetoothDeviceOpponent(_currentSelectedDevice);
             Intent gameIntent = new Intent( this, typeof( GameActivity ) );
             StartActivity( gameIntent );
         }
