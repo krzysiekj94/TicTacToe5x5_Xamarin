@@ -19,6 +19,7 @@ namespace TicTacToeXamarin
     public class GameActivity : AppCompatActivity
     {
         const int REQUEST_ENABLE_BT = 3;
+        const char COORDINATE_MESSAGE_SEPARATOR = ';';
         private const int SIZE_OF_BOARD_VALUE = 5;
         private const int COMPLETE_TILE_TO_WIN_VALUE = 3;
         private TableLayout _gameBoardTableLayout;
@@ -81,7 +82,7 @@ namespace TicTacToeXamarin
             }
             else if( _chatService == null )
             {
-                _gameMessageHandler = new GameMessageHandler();
+                _gameMessageHandler = new GameMessageHandler(this);
                 SetupChat();
                 ConnectDevice( true );
             }
@@ -370,68 +371,105 @@ namespace TicTacToeXamarin
         [Export("OnGameBoardButtonClick")]
         public void OnGameBoardButtonClick( View gameBoardButtonView )
         {
-            GameButtonStates gameButtonState = GameButtonStates.Standard;
-            ImageButton imageButton = null;
-            int[] boardButtonPoint = new int[2];
+            int[] boardButtonPoint = new int[3];
 
-            if( gameBoardButtonView != null 
+            if ( gameBoardButtonView != null 
                 && ( gameBoardButtonView is ImageButton )
                 && _gameBoardDictionary.ContainsKey( gameBoardButtonView.Id ) )
             {
-                gameButtonState = _gameBoardDictionary[gameBoardButtonView.Id];
-                imageButton = FindViewById<ImageButton>( gameBoardButtonView.Id );
                 boardButtonPoint = GetButtonCoordinatePointByID( gameBoardButtonView.Id );
-
-                if( imageButton != null 
-                    && gameButtonState == GameButtonStates.Standard )
-                {
-                    iAmountOfMoves++;
-                    _gameBoardArray[ boardButtonPoint[0], boardButtonPoint[1] ] = _currentSymbolGamer;
-
-                    switch( _currentSymbolGamer )
-                    {
-                        case GameButtonStates.Circle:
-                            imageButton.SetImageResource( Resource.Mipmap.circle );
-                            _gameBoardDictionary[ gameBoardButtonView.Id ] = GameButtonStates.Circle;
-                            break;
-                        case GameButtonStates.Cross:
-                            imageButton.SetImageResource( Resource.Mipmap.cross );
-                            _gameBoardDictionary[gameBoardButtonView.Id] = GameButtonStates.Cross;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    switch( GetGameStatus( boardButtonPoint ) )
-                    {
-                        case GameStatus.Continue:
-                            SetSymbolNextGamer();
-                            break;
-                        case GameStatus.End:
-                            EndGame();
-                            break;
-                        case GameStatus.Tie:
-                            Tie();
-                            break;
-                        case GameStatus.Win:
-                            Win();
-                            break;
-
-                    }
-                }
-            }
-
-            //TESTS
-            if( _oponentDeviceInfo.nameDeviceString != "Redmi" )
-            {
-                SendMessage("Redmi");
-            }
-            else
-            {
-                SendMessage("ZTE");
+                UpdateGameBoard( boardButtonPoint );
+                InformOpponentAboutMove( boardButtonPoint );
             }
         }
 
+        private void UpdateGameBoard( int[] boardButtonPoint )
+        {
+            ImageButton imageButton = null;
+            GameButtonStates gameButtonState = GameButtonStates.Standard;
+
+            gameButtonState = _gameBoardDictionary[boardButtonPoint[2]];
+            imageButton = FindViewById<ImageButton>(boardButtonPoint[2]);
+
+            if( imageButton != null
+                && gameButtonState == GameButtonStates.Standard)
+            {
+                iAmountOfMoves++;
+                _gameBoardArray[boardButtonPoint[0], boardButtonPoint[1]] = _currentSymbolGamer;
+
+                switch (_currentSymbolGamer)
+                {
+                    case GameButtonStates.Circle:
+                        imageButton.SetImageResource(Resource.Mipmap.circle);
+                        _gameBoardDictionary[boardButtonPoint[2]] = GameButtonStates.Circle;
+                        break;
+                    case GameButtonStates.Cross:
+                        imageButton.SetImageResource(Resource.Mipmap.cross);
+                        _gameBoardDictionary[boardButtonPoint[2]] = GameButtonStates.Cross;
+                        break;
+                    default:
+                        break;
+                }
+
+                switch (GetGameStatus(boardButtonPoint))
+                {
+                    case GameStatus.Continue:
+                        SetSymbolNextGamer();
+                        break;
+                    case GameStatus.End:
+                        EndGame();
+                        break;
+                    case GameStatus.Tie:
+                        Tie();
+                        break;
+                    case GameStatus.Win:
+                        Win();
+                        break;
+
+                }
+            }
+        }
+
+        private void InformOpponentAboutMove( int[] boardButtonPoint )
+        {
+            SendMessage( GetFormatedCoordinateString( boardButtonPoint ) );
+        }
+
+        private string GetFormatedCoordinateString( int[] boardButtonPoint )
+        {
+            string messageString = string.Empty;
+
+            for (int iCoordinatePointIndex = 0; iCoordinatePointIndex < boardButtonPoint.Length; iCoordinatePointIndex++)
+            {
+                messageString += Convert.ToString(boardButtonPoint[iCoordinatePointIndex]) + COORDINATE_MESSAGE_SEPARATOR;
+            }
+
+            return messageString;
+        }
+
+        public void RemoteUpdateGameBoard( string readMessage )
+        {
+            int[] encodedCoordinateArray = GetEncodedCoordinateIntArray( readMessage );
+
+            if( _gameBoardDictionary.ContainsKey(encodedCoordinateArray[2]) )
+            {
+                UpdateGameBoard( encodedCoordinateArray );
+            }
+        }
+
+        private int[] GetEncodedCoordinateIntArray( string encodedCoordinateString )
+        {
+            int[] boardButtonPoint = new int[ 3 ];
+
+            string[] encodedCoordinateSpliArrayString = encodedCoordinateString.Split( COORDINATE_MESSAGE_SEPARATOR );
+
+            for( int iIndex = 0; iIndex < boardButtonPoint.Length; iIndex++ )
+            {
+                boardButtonPoint[iIndex] = int.Parse( encodedCoordinateSpliArrayString[iIndex] );
+            }
+
+            return boardButtonPoint;
+        }
 
         public void SendMessage( String messageString )
         {
@@ -714,7 +752,7 @@ namespace TicTacToeXamarin
         {
             int iCounterValue = 0;
             bool bIsGetCoordinate = false;
-            int[] boardButtonCoordinatePointArray = new int[2];
+            int[] boardButtonCoordinatePointArray = new int[ 3 ];
 
             for( int iIteratorX = 0; iIteratorX < SIZE_OF_BOARD_VALUE; iIteratorX++ )
             {
@@ -724,6 +762,7 @@ namespace TicTacToeXamarin
                     {
                         boardButtonCoordinatePointArray[ 0 ] = iIteratorX;
                         boardButtonCoordinatePointArray[ 1 ] = iIteratorY;
+                        boardButtonCoordinatePointArray[ 2 ] = iButtonId;
                         bIsGetCoordinate = true;
                         break;
                     }
