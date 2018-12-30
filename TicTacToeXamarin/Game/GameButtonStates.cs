@@ -12,18 +12,25 @@ using Android.Widget;
 
 namespace TicTacToeXamarin.Game
 {
-    enum GameButtonStates
+    public enum GameButtonStates
     {
         Circle,
         Cross,
         Standard
     }
 
-    enum GameStatus
+    public enum GameStatus
     {
         Continue,
         Win,
         Tie,
         End,
+    }
+
+    public enum GameMessageType
+    {
+        UpdateView,
+        SetPlayer,
+        Unknown,
     }
 }

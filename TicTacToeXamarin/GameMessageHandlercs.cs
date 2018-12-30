@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -50,12 +50,24 @@ namespace TicTacToeXamarin
                 case Constants.MESSAGE_READ:
                     var readBuffer = ( byte[] )msg.Obj;
                     var readMessage = Encoding.ASCII.GetString( readBuffer );
-                    _gameActivity.RemoteUpdateGameBoard( readMessage );
+                    _gameActivity.RemoteUpdateGame( readMessage );
                     //Toast.MakeText(Application.Context, "Odebrałem: " + readMessage, ToastLength.Long).Show();
                     break;
                 case Constants.MESSAGE_DEVICE_NAME:
                     string messagedevice = msg.Data.GetString( Constants.DEVICE_NAME );
-                    Toast.MakeText( Application.Context, "Połączono z: " + messagedevice, ToastLength.Long).Show();
+                    Toast.MakeText( Application.Context, "Połączono z: " + messagedevice, ToastLength.Short).Show();
+
+                    List<string> devicesList = new List<string>();
+
+                    devicesList.Add(messagedevice);
+                    devicesList.Add(_gameActivity.GetNameDevice());
+                    devicesList.Sort();
+
+                    if (devicesList[0] == _gameActivity.GetNameDevice())
+                    {
+                        _gameActivity.SetPlayerMessage();
+                    }
+
                     break;
                 case Constants.MESSAGE_TOAST:
                     break;

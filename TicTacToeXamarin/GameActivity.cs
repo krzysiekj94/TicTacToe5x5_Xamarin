@@ -26,6 +26,7 @@ namespace TicTacToeXamarin
         private Dictionary<int, GameButtonStates> _gameBoardDictionary;
         private GameButtonStates[,] _gameBoardArray;
         private GameButtonStates _currentSymbolGamer;
+        private GameButtonStates _yourSymbolGame;
         private TextView _circleTextView;
         private TextView _crossTextView;
         private TextView _nextMoveTextView;
@@ -43,6 +44,7 @@ namespace TicTacToeXamarin
         public GameActivity()
         {
             _currentSymbolGamer = GameButtonStates.Circle;
+            _yourSymbolGame = _currentSymbolGamer;
             iScoreOfCirclePlayer = 0;
             iScoreOfCrossPlayer = 0;
             iAmountOfMoves = 0;
@@ -71,6 +73,11 @@ namespace TicTacToeXamarin
             }
         }
 
+        public string GetNameDevice()
+        {
+            return _bluetoothAdapter.Name;
+        }
+
         protected override void OnStart()
         {
             base.OnStart();
@@ -89,6 +96,12 @@ namespace TicTacToeXamarin
 
             var filter = new IntentFilter( BluetoothAdapter.ActionScanModeChanged );
             RegisterReceiver( _receiver, filter );
+        }
+
+        public void SetPlayerMessage()
+        {
+            //SendMessage(GetFormatedCoordinateString(new int[] { (int)_yourSymbolGame, 0, 0 }), GameMessageType.SetPlayer);
+            _yourSymbolGame = GameButtonStates.Cross;
         }
 
         void SetupChat()
@@ -160,6 +173,11 @@ namespace TicTacToeXamarin
                     break;
                 default:
                     break;
+            }
+
+            if( _currentSymbolGamer != _yourSymbolGame )
+            {
+                sNextPlayerString += " (Ty)";
             }
 
             return Convert.ToString( "Następny ruch: " + sNextPlayerString );
@@ -377,9 +395,16 @@ namespace TicTacToeXamarin
                 && ( gameBoardButtonView is ImageButton )
                 && _gameBoardDictionary.ContainsKey( gameBoardButtonView.Id ) )
             {
-                boardButtonPoint = GetButtonCoordinatePointByID( gameBoardButtonView.Id );
-                UpdateGameBoard( boardButtonPoint );
-                InformOpponentAboutMove( boardButtonPoint );
+                if( _currentSymbolGamer != _yourSymbolGame )
+                {
+                    boardButtonPoint = GetButtonCoordinatePointByID(gameBoardButtonView.Id);
+                    UpdateGameBoard(boardButtonPoint);
+                    InformOpponentAboutMove(boardButtonPoint);
+                }
+                else
+                {
+                    Toast.MakeText( Application.Context, "Poczekaj na swoją kolej!", ToastLength.Long ).Show();
+                }
             }
         }
 
@@ -432,7 +457,7 @@ namespace TicTacToeXamarin
 
         private void InformOpponentAboutMove( int[] boardButtonPoint )
         {
-            SendMessage( GetFormatedCoordinateString( boardButtonPoint ) );
+            SendMessage( GetFormatedCoordinateString( boardButtonPoint ), GameMessageType.UpdateView );
         }
 
         private string GetFormatedCoordinateString( int[] boardButtonPoint )
@@ -447,14 +472,72 @@ namespace TicTacToeXamarin
             return messageString;
         }
 
-        public void RemoteUpdateGameBoard( string readMessage )
+        public void RemoteUpdateGame( string readMessage )
         {
-            int[] encodedCoordinateArray = GetEncodedCoordinateIntArray( readMessage );
-
-            if( _gameBoardDictionary.ContainsKey(encodedCoordinateArray[2]) )
+            switch( GetGameMessageType( readMessage ) )
             {
-                UpdateGameBoard( encodedCoordinateArray );
+                case GameMessageType.UpdateView:
+
+                    int[] encodedCoordinateArray = GetEncodedCoordinateIntArray(readMessage);
+
+                    if ( _gameBoardDictionary.ContainsKey( encodedCoordinateArray[2] ) )
+                    {
+                        UpdateGameBoard( encodedCoordinateArray );
+                    }
+
+                    break;
+                case GameMessageType.SetPlayer:
+                    //SetPlayerSymbol( readMessage );
+                    break;
+                case GameMessageType.Unknown:
+                    break;
+                default:
+                    break;
             }
+        }
+
+        private void SetPlayerSymbol( string readMessage )
+        {
+            GameButtonStates gameButtonStates = GameButtonStates.Standard;
+            int valueIntOfPlayerState = -1;
+
+            string[] encodedPlayerSymbolSplitArrayString = readMessage.Split(COORDINATE_MESSAGE_SEPARATOR);
+
+            if( int.TryParse( encodedPlayerSymbolSplitArrayString[0], out valueIntOfPlayerState ) )
+            {
+                gameButtonStates = (GameButtonStates)valueIntOfPlayerState;
+
+                switch( gameButtonStates )
+                {
+                    case GameButtonStates.Circle:
+                        _yourSymbolGame = GameButtonStates.Cross;
+                        break;
+                    case GameButtonStates.Cross:
+                        _yourSymbolGame = GameButtonStates.Circle;
+                        break;
+                    case GameButtonStates.Standard:
+                        _yourSymbolGame = GameButtonStates.Cross;
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+        }
+
+        private GameMessageType GetGameMessageType( string readMessage )
+        {
+            GameMessageType gameMessageType = GameMessageType.Unknown;
+            int valueIntOfGameMessageType = -1;
+
+            string[] encodedCoordinateSpliArrayString = readMessage.Split(COORDINATE_MESSAGE_SEPARATOR);
+
+            if( int.TryParse(encodedCoordinateSpliArrayString[3], out valueIntOfGameMessageType ) )
+            {
+                gameMessageType = (GameMessageType) valueIntOfGameMessageType;
+            }
+
+            return gameMessageType;
         }
 
         private int[] GetEncodedCoordinateIntArray( string encodedCoordinateString )
@@ -471,11 +554,13 @@ namespace TicTacToeXamarin
             return boardButtonPoint;
         }
 
-        public void SendMessage( String messageString )
+        public void SendMessage( String messageString, GameMessageType eGameMessageType )
         {
             if( _chatService.GetState() == TicTacToeXamarin.BluetoothService.STATE_CONNECTED
                 && messageString.Length > 0 )
             {
+                messageString += Convert.ToString( (int)eGameMessageType ) + COORDINATE_MESSAGE_SEPARATOR;
+
                 byte[] bytes = Encoding.ASCII.GetBytes( messageString );
                 _chatService.Write( bytes );
             }
