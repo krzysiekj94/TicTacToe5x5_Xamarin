@@ -1,9 +1,11 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.V7.App;
 using Android.Views;
+using Android.Widget;
 using Java.Interop;
 
 namespace TicTacToeXamarin
@@ -17,6 +19,12 @@ namespace TicTacToeXamarin
             SetContentView( Resource.Layout.menu_activity );
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>( Resource.Id.toolbar );
             SetSupportActionBar( toolbar );
+            InitGameTools();
+        }
+
+        private void InitGameTools()
+        {
+            GameTools.InitGameTools();
         }
 
         [Export("OnSearchOpponentButtonClick")]

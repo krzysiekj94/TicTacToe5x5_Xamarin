@@ -56,7 +56,7 @@ namespace TicTacToeXamarin
         protected override void OnCreate( Bundle savedInstanceState )
         {
             base.OnCreate(savedInstanceState);
-            _oponentDeviceInfo = GameTools.bluetoothManager.GetBluetoothDeviceOpponent();
+            _oponentDeviceInfo = GameTools._bluetoothManager.GetBluetoothDeviceOpponent();
             SetContentView(Resource.Layout.game_activity);
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);

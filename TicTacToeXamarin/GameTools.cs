@@ -9,11 +9,19 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using TicTacToeXamarin.Database;
 
 namespace TicTacToeXamarin
 {
     static class GameTools
     {
-        public static BluetoothManager bluetoothManager = new BluetoothManager();
+        public static BluetoothManager _bluetoothManager;
+        public static SQLiteDbManager _sqLiteDbManager;
+
+        static public void InitGameTools()
+        {
+            _sqLiteDbManager = new SQLiteDbManager();
+            _bluetoothManager = new BluetoothManager();
+        }
     }
 }
