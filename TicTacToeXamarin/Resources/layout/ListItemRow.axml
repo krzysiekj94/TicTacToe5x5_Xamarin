@@ -11,17 +11,26 @@
       android:lineSpacingExtra="3dp"
       android:paddingLeft="10dp"
       android:paddingTop="5dp"
-      android:textColor="#ffffff"
+      android:textColor="#ba1a1a"
       android:textStyle="bold"
       android:typeface="sans"
-      android:layout_alignParentLeft="true"/>
+      android:layout_alignParentLeft="true" />
   <TextView
       android:id="@+id/MacDevice"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingLeft="10dp"
+      android:paddingRight="10dp"
       android:paddingTop="5dp"
-      android:textColor="#fff"
+      android:textColor="#ad7506"
+	  android:textStyle="bold"
       android:textSize="11sp"
       android:layout_alignParentRight="true"/>
+   <TextView
+      android:id="@+id/StatsOpponentText"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+	  android:paddingLeft="10dp"
+      android:paddingTop="25dp"
+      android:textColor="#f74f4f"
+      android:textSize="11sp" />
 </RelativeLayout>

@@ -62,7 +62,7 @@ namespace TicTacToeXamarin.Database
         {
             try
             {
-                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_folderPathString, NAME_DB_STRING)))
+                using( var connection = new SQLiteConnection( System.IO.Path.Combine( _folderPathString, NAME_DB_STRING ) ) )
                 {
                     return connection.Table<GameInfoDB>().ToList();
                 }

@@ -14,6 +14,8 @@
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+		android:choiceMode="singleChoice" 
+        android:listSelector="@android:color/darker_gray"
         android:id="@+id/bluetoothDevicesList" />
     <Button
 				android:text="WYBIERZ"
@@ -21,8 +23,8 @@
 				android:layout_height="wrap_content"
 				android:background="@android:color/holo_green_dark"
 				android:layout_alignParentBottom="true"
-        android:layout_marginBottom ="20dp"
-        android:layout_centerHorizontal="true"
+				android:layout_marginBottom ="20dp"
+				android:layout_centerHorizontal="true"
 				android:onClick="OnBluetoothDeviceClick" />
   </RelativeLayout>
 </RelativeLayout>

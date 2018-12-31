@@ -238,6 +238,8 @@ namespace TicTacToeXamarin
             _resultTextView.Text = "Wygrał: " + GetWinnerNameText();
             _resultTextView.Visibility = ViewStates.Visible;
 
+            SaveStateGameToDB();
+
             using ( var alertDialogBuilder = new Android.Support.V7.App.AlertDialog.Builder( this ) )
             {
                 string tieTitleString = "Czy chcesz zagrać ponownie:";
@@ -248,6 +250,48 @@ namespace TicTacToeXamarin
                 alertDialogBuilder.SetNegativeButton( "Nie", CancelAction );
                 myCustomDialog = alertDialogBuilder.Create();
                 myCustomDialog.Show();
+            }
+        }
+
+        private void SaveStateGameToDB()
+        {
+            List<GameInfoDB> listGameInfoDB = GameTools._sqLiteDbManager.selectTable();
+            GameInfoDB opponentGameInfoDB = listGameInfoDB.FindAll( gameInfoDB => gameInfoDB.OpponentDeviceMac == _oponentDeviceInfo.macDeviceString ).FirstOrDefault();
+
+            if( opponentGameInfoDB != null )
+            {
+                if( _currentSymbolGamer != _yourSymbolGame )
+                {
+                    opponentGameInfoDB.amountOfYourWin++;
+                }
+                else
+                {
+                    opponentGameInfoDB.amountOfOpponentWin++;
+                }
+
+                opponentGameInfoDB.lastDateTimeGame = DateTime.Now.ToString();
+
+                GameTools._sqLiteDbManager.updateTable( opponentGameInfoDB );
+            }
+            else
+            {
+                opponentGameInfoDB = new GameInfoDB();
+
+                opponentGameInfoDB.OpponentDeviceMac = _oponentDeviceInfo.macDeviceString;
+                opponentGameInfoDB.OpponentDeviceName = _oponentDeviceInfo.nameDeviceString;
+
+                if (_currentSymbolGamer != _yourSymbolGame)
+                {
+                    opponentGameInfoDB.amountOfYourWin = 1;
+                }
+                else
+                {
+                    opponentGameInfoDB.amountOfOpponentWin = 1;
+                }
+
+                opponentGameInfoDB.lastDateTimeGame = DateTime.Now.ToString();
+
+                GameTools._sqLiteDbManager.InsertGameInfo(opponentGameInfoDB);
             }
         }
 
