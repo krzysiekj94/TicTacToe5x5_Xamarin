@@ -94,13 +94,13 @@ namespace TicTacToeXamarin.Database
             }
         }
 
-        public bool removeTable( GameInfoDB gameInfoDB )
+        public bool removeTable()
         {
             try
             {
                 using (var connection = new SQLiteConnection( System.IO.Path.Combine( _folderPathString, NAME_DB_STRING ) ) )
                 {
-                    connection.Delete( gameInfoDB );
+                    connection.DeleteAll<GameInfoDB>();
                     return true;
                 }
             }

@@ -34,10 +34,17 @@ namespace TicTacToeXamarin
             StartActivity( searchIntent );
         }
 
+        [Export("OnMyStatsButtonClick")]
+        public void OnMyStatsButtonClick( View gameBoardButtonView )
+        {
+            Intent statsIntent = new Intent( this, typeof( StatsActivity ) );
+            StartActivity( statsIntent );
+        }
+
         [Export("OnSettingsButtonClick")]
         public void OnSettingsButtonClick( View gameBoardButtonView )
         {
-            //TODO 3. Implement new activity with user settings
+            //TODO Implement new activity with user settings
         }
 
         [Export("OnCloseAppButtonClick")]
