@@ -24,22 +24,21 @@ namespace TicTacToeXamarin
             _blueToothOpponentDevice = null;
             _bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
 
-            if ( _bluetoothAdapter == null )
+            if( IsEnableBluetoothAdapter() )
             {
-                throw new Exception("No Bluetooth adapter found.");
-            }
+                _bluetoothDevicesDictionary = new Dictionary<string, string>();
 
-            if( !_bluetoothAdapter.IsEnabled )
-            {
-                throw new Exception("Bluetooth adapter is not enabled.");
+                foreach (var device in _bluetoothAdapter.BondedDevices)
+                {
+                    _bluetoothDevicesDictionary.Add( device.Name, device.Address );
+                }
             }
+        }
 
-            _bluetoothDevicesDictionary = new Dictionary<string, string>();
-
-            foreach ( var device in _bluetoothAdapter.BondedDevices )
-            {
-                _bluetoothDevicesDictionary.Add( device.Name, device.Address );
-            }
+        public bool IsEnableBluetoothAdapter()
+        {
+            return ( _bluetoothAdapter != null
+                && _bluetoothAdapter.IsEnabled );
         }
 
         public void SetBluetoothDeviceOpponent( BluetoothDeviceInfo bluetoothDeviceOpponentInfo )

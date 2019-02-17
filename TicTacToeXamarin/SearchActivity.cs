@@ -43,13 +43,20 @@ namespace TicTacToeXamarin
 
         private void LoadBluetoothDeviceList()
         {
-            foreach (var device in _bluetoothManager.GetBluetoothDevicesDictionary())
+            if( _bluetoothManager.IsEnableBluetoothAdapter() )
             {
-                _bluetoothDeviceInfoList.Add( new BluetoothDeviceInfo()
+                foreach (var device in _bluetoothManager.GetBluetoothDevicesDictionary())
                 {
-                    nameDeviceString = device.Key,
-                    macDeviceString = device.Value
-                });
+                    _bluetoothDeviceInfoList.Add(new BluetoothDeviceInfo()
+                    {
+                        nameDeviceString = device.Key,
+                        macDeviceString = device.Value
+                    });
+                }
+            }
+            else
+            {
+                Toast.MakeText(Application.Context, "Please enable bluetooth adapter on your device!", ToastLength.Long).Show();
             }
         }
 
