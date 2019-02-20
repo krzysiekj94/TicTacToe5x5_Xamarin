@@ -239,6 +239,7 @@ namespace TicTacToeXamarin
             _resultTextView.Visibility = ViewStates.Visible;
 
             SaveStateGameToDB();
+            PlayEndGameBeep();
 
             using ( var alertDialogBuilder = new Android.Support.V7.App.AlertDialog.Builder( this ) )
             {
@@ -251,6 +252,22 @@ namespace TicTacToeXamarin
                 myCustomDialog = alertDialogBuilder.Create();
                 myCustomDialog.Show();
             }
+        }
+
+        private void PlayEndGameBeep()
+        {
+            Android.Media.MediaPlayer soundMediaPlayer;
+
+            if( _currentSymbolGamer != _yourSymbolGame )
+            {
+                soundMediaPlayer = Android.Media.MediaPlayer.Create( this, Resource.Raw.winnerSound );
+            }
+            else
+            {
+                soundMediaPlayer = Android.Media.MediaPlayer.Create( this, Resource.Raw.loseSound );
+            }
+
+            soundMediaPlayer.Start();
         }
 
         private void SaveStateGameToDB()
@@ -494,7 +511,6 @@ namespace TicTacToeXamarin
                     case GameStatus.Win:
                         Win();
                         break;
-
                 }
             }
         }
