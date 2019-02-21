@@ -57,6 +57,7 @@
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AvatarActivity.cs" />
     <Compile Include="ListViewAdapter\GameStatsListAdapter.cs" />
     <Compile Include="BluetoothService.cs" />
     <Compile Include="BluetoothDeviceInfo.cs" />
@@ -191,6 +192,16 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\raw\winnerSound.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\content_avatar.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\avatar_activity.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

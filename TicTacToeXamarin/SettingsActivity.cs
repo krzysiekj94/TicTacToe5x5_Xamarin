@@ -29,7 +29,7 @@ namespace TicTacToeXamarin
 
         private void SetAvatar()
         {
-
+            //TODO
         }
 
         [Export("OnSaveSettingsClick")]
@@ -42,8 +42,8 @@ namespace TicTacToeXamarin
         [Export("OnChangeAvatarClick")]
         public void OnChangeAvatarClick( View gameBoardButtonView )
         {
-            //TODO Select avatar
-            Toast.MakeText(ApplicationContext, "Zmieniam awatar!", ToastLength.Short).Show();
+            Intent avatarActivityIntent = new Intent( this, typeof( AvatarActivity ) );
+            StartActivity( avatarActivityIntent );
         }
     }
 }
