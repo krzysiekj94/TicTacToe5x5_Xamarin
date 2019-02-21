@@ -24,13 +24,26 @@ namespace TicTacToeXamarin
             SetContentView( Resource.Layout.settings_activity );
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>( Resource.Id.toolbar );
             SetSupportActionBar( toolbar );
+            SetAvatar();
+        }
+
+        private void SetAvatar()
+        {
+
         }
 
         [Export("OnSaveSettingsClick")]
-        public void OnReturnToMenuClick(View gameBoardButtonView)
+        public void OnReturnToMenuClick( View gameBoardButtonView )
         {
             //TODO save changes settings to DB
             Toast.MakeText(ApplicationContext, "Zapisuję zmiany do bazy!", ToastLength.Short).Show();
+        }
+
+        [Export("OnChangeAvatarClick")]
+        public void OnChangeAvatarClick( View gameBoardButtonView )
+        {
+            //TODO Select avatar
+            Toast.MakeText(ApplicationContext, "Zmieniam awatar!", ToastLength.Short).Show();
         }
     }
 }
