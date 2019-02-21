@@ -6,19 +6,74 @@
     android:layout_height="fill_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_main">
-  <RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
-     android:orientation="vertical"
-     android:background="#d3d3d3"
-     android:layout_width="fill_parent"
-     android:layout_height="fill_parent"> 
-		<Button
-			android:text="ZAPISZ awatar"
+  <LinearLayout
+		xmlns:android = "http://schemas.android.com/apk/res/android"
+		android:orientation = "vertical"
+		android:layout_width = "match_parent"
+		android:layout_height = "match_parent">
+		<TableLayout
+			xmlns:android="http://schemas.android.com/apk/res/android"
+			android:id="@+id/boardTableLayout"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:stretchColumns="*">
+			<TableRow>
+				<ImageButton
+					android:src="@mipmap/blue"
+					android:layout_width="70dp"
+					android:layout_height="115dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnAvatarImageButtonClick" />
+				<ImageButton
+					android:src="@mipmap/green"
+					android:layout_width="70dp"
+					android:layout_height="115dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnAvatarImageButtonClick" />
+			</TableRow>
+			<TableRow>
+				<ImageButton
+					android:src="@mipmap/milky"
+					android:layout_width="70dp"
+					android:layout_height="115dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnAvatarImageButtonClick" />
+				<ImageButton
+					android:src="@mipmap/sand"
+					android:layout_width="70dp"
+					android:layout_height="115dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnAvatarImageButtonClick" />
+			</TableRow>
+			<TableRow>
+				<ImageButton
+					android:src="@mipmap/wooden1"
+					android:layout_width="70dp"
+					android:layout_height="115dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnAvatarImageButtonClick" />
+				<ImageButton
+					android:src="@mipmap/wooden2"
+					android:layout_width="70dp"
+					android:layout_height="115dp"
+					android:adjustViewBounds="true"
+					android:scaleType="fitCenter"
+					android:onClick="OnAvatarImageButtonClick" />
+			</TableRow>
+		</TableLayout>
+	</LinearLayout>
+			<Button
+			android:text="POWRÓT"
 			android:layout_width="100dp"
 			android:layout_height="wrap_content"
 			android:background="@android:color/holo_green_dark"
 			android:layout_alignParentBottom="true"
 			android:layout_marginBottom ="20dp"
 			android:layout_centerHorizontal="true"
-			android:onClick="OnSaveSettingsClick"/>
-  </RelativeLayout>
+			android:onClick="OnSettingsActivityReturn"/>
 </RelativeLayout>

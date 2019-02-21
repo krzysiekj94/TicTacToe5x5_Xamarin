@@ -2471,8 +2471,8 @@ namespace TicTacToeXamarin
 			// aapt resource value: 0x7f090094
 			public const int bluetoothDevicesList = 2131296404;
 			
-			// aapt resource value: 0x7f09008f
-			public const int boardTableLayout = 2131296399;
+			// aapt resource value: 0x7f09008c
+			public const int boardTableLayout = 2131296396;
 			
 			// aapt resource value: 0x7f09003d
 			public const int bottom = 2131296317;
@@ -2498,8 +2498,8 @@ namespace TicTacToeXamarin
 			// aapt resource value: 0x7f0900c0
 			public const int chronometer = 2131296448;
 			
-			// aapt resource value: 0x7f09008c
-			public const int circleTextView = 2131296396;
+			// aapt resource value: 0x7f09008d
+			public const int circleTextView = 2131296397;
 			
 			// aapt resource value: 0x7f09004e
 			public const int clip_horizontal = 2131296334;
@@ -2519,8 +2519,8 @@ namespace TicTacToeXamarin
 			// aapt resource value: 0x7f09009e
 			public const int coordinator = 2131296414;
 			
-			// aapt resource value: 0x7f09008d
-			public const int crossTextView = 2131296397;
+			// aapt resource value: 0x7f09008e
+			public const int crossTextView = 2131296398;
 			
 			// aapt resource value: 0x7f09006d
 			public const int custom = 2131296365;
@@ -2678,8 +2678,8 @@ namespace TicTacToeXamarin
 			// aapt resource value: 0x7f09003b
 			public const int never = 2131296315;
 			
-			// aapt resource value: 0x7f09008e
-			public const int nextMoveTextView = 2131296398;
+			// aapt resource value: 0x7f09008f
+			public const int nextMoveTextView = 2131296399;
 			
 			// aapt resource value: 0x7f090098
 			public const int nicknameTextView = 2131296408;
@@ -3244,22 +3244,40 @@ namespace TicTacToeXamarin
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int circle = 2130903040;
+			public const int blue = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int cross = 2130903041;
+			public const int circle = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int ic_launcher = 2130903042;
+			public const int cross = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int ic_launcher_foreground = 2130903043;
+			public const int green = 2130903043;
 			
 			// aapt resource value: 0x7f030004
-			public const int ic_launcher_round = 2130903044;
+			public const int ic_launcher = 2130903044;
 			
 			// aapt resource value: 0x7f030005
-			public const int TicTacMenu = 2130903045;
+			public const int ic_launcher_foreground = 2130903045;
+			
+			// aapt resource value: 0x7f030006
+			public const int ic_launcher_round = 2130903046;
+			
+			// aapt resource value: 0x7f030007
+			public const int milky = 2130903047;
+			
+			// aapt resource value: 0x7f030008
+			public const int sand = 2130903048;
+			
+			// aapt resource value: 0x7f030009
+			public const int TicTacMenu = 2130903049;
+			
+			// aapt resource value: 0x7f03000a
+			public const int wooden1 = 2130903050;
+			
+			// aapt resource value: 0x7f03000b
+			public const int wooden2 = 2130903051;
 			
 			static Mipmap()
 			{

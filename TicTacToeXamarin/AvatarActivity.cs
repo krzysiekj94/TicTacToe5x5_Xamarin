@@ -25,5 +25,21 @@ namespace TicTacToeXamarin
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
         }
+
+        [Export("OnSettingsActivityReturn")]
+        public void OnChangeAvatarClick(View gameBoardButtonView)
+        {
+            Intent settingsActivityIntent = new Intent(this, typeof( SettingsActivity ));
+            StartActivity(settingsActivityIntent);
+        }
+
+        [Export("OnAvatarImageButtonClick")]
+        public void OnAvatarImageButtonClick(View gameBoardButtonView)
+        {
+            //TODO change avatar and set into settings activity
+
+            Intent settingsActivityIntent = new Intent(this, typeof(SettingsActivity));
+            StartActivity(settingsActivityIntent);
+        }
     }
 }
