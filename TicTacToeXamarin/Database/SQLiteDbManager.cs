@@ -106,7 +106,7 @@ namespace TicTacToeXamarin.Database
             {
                 using (var connection = new SQLiteConnection(System.IO.Path.Combine(_folderPathString, NAME_DB_STRING)))
                 {
-                    connection.Query<SettingsDB>("UPDATE GameInfoDB set DeviceMac=?, DeviceName=?, DeviceAvatarId=?",
+                    connection.Query<SettingsDB>("UPDATE SettingsDB set DeviceMac=?, DeviceName=?, DeviceAvatarId=?",
                         settingsDB.DeviceMac, settingsDB.DeviceName, settingsDB.DeviceAvatarId);
 
                     return true;

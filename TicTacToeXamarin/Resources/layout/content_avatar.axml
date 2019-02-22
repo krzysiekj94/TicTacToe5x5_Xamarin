@@ -19,6 +19,7 @@
 			android:stretchColumns="*">
 			<TableRow>
 				<ImageButton
+					android:id="@+id/avatar0"
 					android:src="@mipmap/blue"
 					android:layout_width="70dp"
 					android:layout_height="115dp"
@@ -26,6 +27,7 @@
 					android:scaleType="fitCenter"
 					android:onClick="OnAvatarImageButtonClick" />
 				<ImageButton
+					android:id="@+id/avatar1"
 					android:src="@mipmap/green"
 					android:layout_width="70dp"
 					android:layout_height="115dp"
@@ -35,6 +37,7 @@
 			</TableRow>
 			<TableRow>
 				<ImageButton
+					android:id="@+id/avatar2"
 					android:src="@mipmap/milky"
 					android:layout_width="70dp"
 					android:layout_height="115dp"
@@ -42,6 +45,7 @@
 					android:scaleType="fitCenter"
 					android:onClick="OnAvatarImageButtonClick" />
 				<ImageButton
+					android:id="@+id/avatar3"
 					android:src="@mipmap/sand"
 					android:layout_width="70dp"
 					android:layout_height="115dp"
@@ -51,6 +55,7 @@
 			</TableRow>
 			<TableRow>
 				<ImageButton
+					android:id="@+id/avatar4"
 					android:src="@mipmap/wooden1"
 					android:layout_width="70dp"
 					android:layout_height="115dp"
@@ -58,6 +63,7 @@
 					android:scaleType="fitCenter"
 					android:onClick="OnAvatarImageButtonClick" />
 				<ImageButton
+					android:id="@+id/avatar5"
 					android:src="@mipmap/wooden2"
 					android:layout_width="70dp"
 					android:layout_height="115dp"

@@ -29,7 +29,7 @@ namespace TicTacToeXamarin.Game
 
     public enum GameAvatar
     {
-        Blue,
+        Blue = 0,
         Green,
         Milky,
         Sand,

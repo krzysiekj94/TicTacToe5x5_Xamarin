@@ -101,8 +101,15 @@ namespace TicTacToeXamarin
         [Export("OnSaveSettingsClick")]
         public void OnReturnToMenuClick( View gameBoardButtonView )
         {
-            //TODO save changes settings to DB
-            Toast.MakeText(ApplicationContext, "Zapisuję zmiany do bazy!", ToastLength.Short).Show();
+            _settingsDB.DeviceName = _nicknameEditText.Text;
+
+            if (!GameTools._sqLiteDbManager.UpdateSettings(_settingsDB))
+            {
+                Toast.MakeText(ApplicationContext, "Zapis obrazka do bazy się nie powiódł!", ToastLength.Short).Show();
+            }
+
+            Intent menuActivityIntent = new Intent(this, typeof(MenuActivity));
+            StartActivity(menuActivityIntent);
         }
 
         [Export("OnChangeAvatarClick")]
