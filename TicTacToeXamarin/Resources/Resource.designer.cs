@@ -2669,9 +2669,6 @@ namespace TicTacToeXamarin
 			// aapt resource value: 0x7f090028
 			public const int multiply = 2131296296;
 			
-			// aapt resource value: 0x7f090099
-			public const int name = 2131296409;
-			
 			// aapt resource value: 0x7f0900a3
 			public const int navigation_header_container = 2131296419;
 			
@@ -2680,6 +2677,9 @@ namespace TicTacToeXamarin
 			
 			// aapt resource value: 0x7f09008f
 			public const int nextMoveTextView = 2131296399;
+			
+			// aapt resource value: 0x7f090099
+			public const int nicknameTextEdit = 2131296409;
 			
 			// aapt resource value: 0x7f090098
 			public const int nicknameTextView = 2131296408;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Android.App;
+using Android.Bluetooth;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
@@ -18,11 +19,34 @@ namespace TicTacToeXamarin.Database
     {
         private string _folderPathString;
         private const string NAME_DB_STRING = "GameInfoDB.db";
+        private const int I_DEFAULT_AVATAR_ID = 0; 
 
         public SQLiteDbManager()
         {
             _folderPathString = System.Environment.GetFolderPath( System.Environment.SpecialFolder.Personal );
             CreateDb();
+            InitSettings();
+        }
+
+        private void InitSettings()
+        {
+            List<SettingsDB> listSettingsDB = selectSettingsTable();
+            SettingsDB settingsDB = new SettingsDB();
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
+
+            if ( listSettingsDB == null 
+                || ( listSettingsDB != null && listSettingsDB.Count == 0 ))
+            {
+                settingsDB.DeviceAvatarId = I_DEFAULT_AVATAR_ID;
+
+                if( bluetoothAdapter != null )
+                {
+                    settingsDB.DeviceName = bluetoothAdapter.Name;
+                    settingsDB.DeviceMac = bluetoothAdapter.Address;
+                }
+
+                InsertSettingsInfo(settingsDB);
+            }
         }
 
         public bool CreateDb()
@@ -32,6 +56,59 @@ namespace TicTacToeXamarin.Database
                 using( var connection = new SQLiteConnection(System.IO.Path.Combine( _folderPathString, NAME_DB_STRING ) ) )
                 {
                     connection.CreateTable<GameInfoDB>();
+                    connection.CreateTable<SettingsDB>();
+                    return true;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Info("SQLiteEx", ex.Message);
+                return false;
+            }
+        }
+
+        public List<SettingsDB> selectSettingsTable()
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_folderPathString, NAME_DB_STRING)))
+                {
+                    return connection.Table<SettingsDB>().ToList();
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Info("SQLiteEx", ex.Message);
+                return null;
+            }
+        }
+
+        public bool InsertSettingsInfo(SettingsDB settingsInfoDB)
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_folderPathString, NAME_DB_STRING)))
+                {
+                    connection.Insert(settingsInfoDB);
+                    return true;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Log.Info("SQLiteEx", ex.Message);
+                return false;
+            }
+        }
+
+        public bool UpdateSettings( SettingsDB settingsDB )
+        {
+            try
+            {
+                using (var connection = new SQLiteConnection(System.IO.Path.Combine(_folderPathString, NAME_DB_STRING)))
+                {
+                    connection.Query<SettingsDB>("UPDATE GameInfoDB set DeviceMac=?, DeviceName=?, DeviceAvatarId=?",
+                        settingsDB.DeviceMac, settingsDB.DeviceName, settingsDB.DeviceAvatarId);
+
                     return true;
                 }
             }
@@ -58,6 +135,7 @@ namespace TicTacToeXamarin.Database
                 return false;
             }
         }
+
         public List<GameInfoDB> selectTable()
         {
             try

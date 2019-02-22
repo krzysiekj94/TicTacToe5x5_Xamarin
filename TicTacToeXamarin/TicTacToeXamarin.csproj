@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AvatarActivity.cs" />
+    <Compile Include="Database\SettingsDB.cs" />
     <Compile Include="ListViewAdapter\GameStatsListAdapter.cs" />
     <Compile Include="BluetoothService.cs" />
     <Compile Include="BluetoothDeviceInfo.cs" />
@@ -70,7 +71,6 @@
     <Compile Include="GameTools.cs" />
     <Compile Include="MenuActivity.cs" />
     <Compile Include="BluetoothManager.cs" />
-    <Compile Include="Game\GameBoard.cs" />
     <Compile Include="Game\GameButtonStates.cs" />
     <Compile Include="GameActivity.cs" />
     <Compile Include="SettingsActivity.cs" />

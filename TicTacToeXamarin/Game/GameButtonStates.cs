@@ -27,6 +27,16 @@ namespace TicTacToeXamarin.Game
         End,
     }
 
+    public enum GameAvatar
+    {
+        Blue,
+        Green,
+        Milky,
+        Sand,
+        Wooden1,
+        Wooden2,
+    }
+
     public enum GameMessageType
     {
         UpdateView,
