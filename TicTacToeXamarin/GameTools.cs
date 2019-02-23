@@ -17,11 +17,13 @@ namespace TicTacToeXamarin
     {
         public static BluetoothManager _bluetoothManager;
         public static SQLiteDbManager _sqLiteDbManager;
+        public static SettingsDB _opponentSettingsDB;
 
         static public void InitGameTools()
         {
             _sqLiteDbManager = new SQLiteDbManager();
             _bluetoothManager = new BluetoothManager();
+            _opponentSettingsDB = new SettingsDB();
         }
     }
 }

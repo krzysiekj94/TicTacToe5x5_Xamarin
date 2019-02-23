@@ -15,7 +15,7 @@
 			xmlns:android = "http://schemas.android.com/apk/res/android"
 			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:layout_height="60dp">
+			android:layout_height="80dp">
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -26,11 +26,23 @@
 				android:layout_height="wrap_content"
 				android:text="(Cross Text View placeholder)"
 				android:id="@+id/crossTextView" />
+			<RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android" 
+		   android:orientation="horizontal" 
+		   android:layout_width="wrap_content" 
+		   android:layout_height="match_parent"> 
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:text="(Next move text view placeholder)"
 				android:id="@+id/nextMoveTextView" />
+			<ImageView
+				android:src="@android:drawable/ic_menu_gallery"
+				android:layout_width="50dp"
+				android:layout_height="50dp"
+				android:layout_alignParentRight="true"
+				android:layout_marginRight="50dp"
+				android:id="@+id/avatarGameImageView" />
+			</RelativeLayout>
 		</LinearLayout>
 		<TableLayout
 			xmlns:android="http://schemas.android.com/apk/res/android"

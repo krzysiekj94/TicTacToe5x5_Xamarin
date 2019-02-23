@@ -41,6 +41,7 @@ namespace TicTacToeXamarin.Game
     {
         UpdateView,
         SetPlayer,
+        SetOpponentData,
         Unknown,
     }
 }

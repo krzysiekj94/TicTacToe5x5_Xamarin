@@ -68,6 +68,7 @@ namespace TicTacToeXamarin
                         _gameActivity.SetPlayerMessage();
                     }
 
+                    _gameActivity.SetOpponentSettingsData();
                     break;
                 case Constants.MESSAGE_TOAST:
                     break;

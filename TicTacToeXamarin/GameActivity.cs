@@ -11,6 +11,7 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using Java.Interop;
+using TicTacToeXamarin.Database;
 using TicTacToeXamarin.Game;
 
 namespace TicTacToeXamarin
@@ -31,6 +32,7 @@ namespace TicTacToeXamarin
         private TextView _crossTextView;
         private TextView _nextMoveTextView;
         private TextView _resultTextView;
+        private ImageView _avatarImageView;
         int iScoreOfCirclePlayer;
         int iScoreOfCrossPlayer;
         int iAmountOfMoves;
@@ -61,6 +63,7 @@ namespace TicTacToeXamarin
             Android.Support.V7.Widget.Toolbar toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.toolbar);
             SetSupportActionBar(toolbar);
             InitTextViews();
+            _avatarImageView = FindViewById<ImageView>(Resource.Id.avatarGameImageView);
             InitBoard();
             
             _bluetoothAdapter = BluetoothAdapter.DefaultAdapter;
@@ -156,31 +159,62 @@ namespace TicTacToeXamarin
             _resultTextView.Visibility = ViewStates.Invisible;
         }
 
+        private void SetAvatarImageNextMove()
+        {
+            GameAvatar avatarID = 0;
+
+            if (_currentSymbolGamer != _yourSymbolGame)
+            {
+                avatarID = (GameAvatar)GameTools._sqLiteDbManager.selectSettings().DeviceAvatarId;
+            }
+            else
+            {
+                avatarID = (GameAvatar)GameTools._opponentSettingsDB.DeviceAvatarId;
+            }
+
+            switch (avatarID)
+            {
+                case GameAvatar.Blue:
+                    _avatarImageView.SetImageResource(Resource.Mipmap.blue);
+                    break;
+                case GameAvatar.Green:
+                    _avatarImageView.SetImageResource(Resource.Mipmap.green);
+                    break;
+                case GameAvatar.Milky:
+                    _avatarImageView.SetImageResource(Resource.Mipmap.milky);
+                    break;
+                case GameAvatar.Sand:
+                    _avatarImageView.SetImageResource(Resource.Mipmap.sand);
+                    break;
+                case GameAvatar.Wooden1:
+                    _avatarImageView.SetImageResource(Resource.Mipmap.wooden1);
+                    break;
+                case GameAvatar.Wooden2:
+                    _avatarImageView.SetImageResource(Resource.Mipmap.wooden2);
+                    break;
+            }
+        }
+
         private string GetNextMovePlayerName()
         {
             string sNextPlayerString = "Nieznany!";
 
-            switch( _currentSymbolGamer )
-            {
-                case GameButtonStates.Circle:
-                    sNextPlayerString = "Kółko";
-                    break;
-                case GameButtonStates.Cross:
-                    sNextPlayerString = "Krzyżyk";
-                    break;
-                case GameButtonStates.Standard:
-                    sNextPlayerString = "Standard";
-                    break;
-                default:
-                    break;
-            }
-
             if( _currentSymbolGamer != _yourSymbolGame )
             {
-                sNextPlayerString += " (Ty)";
+                sNextPlayerString = GetDatabaseDeviceName() + " (Ty)";
+            }
+            else
+            {
+                sNextPlayerString = GameTools._opponentSettingsDB.DeviceName;
             }
 
             return Convert.ToString( "Następny ruch: " + sNextPlayerString );
+        }
+
+        private string GetDatabaseDeviceName()
+        {
+            SettingsDB selectSettings = GameTools._sqLiteDbManager.selectSettings();
+            return selectSettings.DeviceName;
         }
 
         private void InitBoard()
@@ -316,19 +350,13 @@ namespace TicTacToeXamarin
         {
             string sPlayerName = "Nieznany";
 
-            switch (_currentSymbolGamer)
+            if (_currentSymbolGamer != _yourSymbolGame)
             {
-                case GameButtonStates.Circle:
-                    sPlayerName = "Kółko";
-                    break;
-                case GameButtonStates.Cross:
-                    sPlayerName = "Krzyżyk";
-                    break;
-                case GameButtonStates.Standard:
-                    sPlayerName = "Standard";
-                    break;
-                default:
-                    break;
+                sPlayerName = GetDatabaseDeviceName() + " (Ty)";
+            }
+            else
+            {
+                sPlayerName = GameTools._opponentSettingsDB.DeviceName;
             }
 
             return Convert.ToString(sPlayerName);
@@ -532,6 +560,18 @@ namespace TicTacToeXamarin
             return messageString;
         }
 
+        private string GetFormatedSettingsDeviceString()
+        {
+            string messageString = string.Empty;
+            SettingsDB settingsDB = GameTools._sqLiteDbManager.selectSettings();
+
+            messageString += settingsDB.DeviceName + COORDINATE_MESSAGE_SEPARATOR;
+            messageString += settingsDB.DeviceMac + COORDINATE_MESSAGE_SEPARATOR;
+            messageString += Convert.ToString(settingsDB.DeviceAvatarId) + COORDINATE_MESSAGE_SEPARATOR;
+
+            return messageString;
+        }
+
         public void RemoteUpdateGame( string readMessage )
         {
             switch( GetGameMessageType( readMessage ) )
@@ -549,11 +589,31 @@ namespace TicTacToeXamarin
                 case GameMessageType.SetPlayer:
                     //SetPlayerSymbol( readMessage );
                     break;
+                case GameMessageType.SetOpponentData:
+                    GetOpponentSettingsData( readMessage );
+                    break;
                 case GameMessageType.Unknown:
                     break;
                 default:
                     break;
             }
+        }
+
+        private void GetOpponentSettingsData(string readMessage)
+        {
+            string[] encodedSettingsString = readMessage.Split(COORDINATE_MESSAGE_SEPARATOR);
+
+            GameTools._opponentSettingsDB.DeviceName = encodedSettingsString[0];
+            GameTools._opponentSettingsDB.DeviceMac = encodedSettingsString[1];
+            GameTools._opponentSettingsDB.DeviceAvatarId = int.Parse(encodedSettingsString[2]);
+
+            SetNextMovePlayerName();
+
+        }
+
+        public void SetOpponentSettingsData()
+        {
+           SendMessage(GetFormatedSettingsDeviceString(), GameMessageType.SetOpponentData);
         }
 
         private void SetPlayerSymbol( string readMessage )
@@ -662,6 +722,13 @@ namespace TicTacToeXamarin
             }
 
             _nextMoveTextView.Text = GetNextMovePlayerName();
+            SetAvatarImageNextMove();
+        }
+
+        public void SetNextMovePlayerName()
+        {
+            _nextMoveTextView.Text = GetNextMovePlayerName();
+            SetAvatarImageNextMove();
         }
 
         private GameStatus GetGameStatus(int[] boardButtonPoint)

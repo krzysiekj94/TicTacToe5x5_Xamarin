@@ -83,6 +83,20 @@ namespace TicTacToeXamarin.Database
             }
         }
 
+        public SettingsDB selectSettings()
+        {
+            List<SettingsDB> settingsDBList = GameTools._sqLiteDbManager.selectSettingsTable();
+            SettingsDB settingsDB = null;
+
+            if (settingsDBList != null
+               && settingsDBList.Count == 1)
+            {
+                settingsDB = settingsDBList.FirstOrDefault();
+            }
+
+            return settingsDB;
+        }
+
         public bool InsertSettingsInfo(SettingsDB settingsInfoDB)
         {
             try
